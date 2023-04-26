@@ -1,0 +1,70 @@
+.TH GIShell 1  "07 19 2017" "1.0"
+.SH NAME
+.B GIShell, hsh - a command language interpreter
+.SH SYNOPSIS
+.IP
+.I hsh [command] [arg] ...
+
+.SH DESCRIPTION
+The GIShell - hsh is a command language interpreter identical to sh: it reads commands, either from the command line or from a file (a shell script), and then sets about executing those commands. Thus could be the main interface between the user and the operating system.
+
+.SH OVERVIEW
+The GIShell - hsh as it replicates the way sh handles commands it incorporates most sh features. Interactive and non-interactive mode as well as most of sh built-in commands.
+
+.SH INVOCATION
+To use the GIShell you run the executable ./hsh, pipe commands into it, or by calling it in a script.
+
+.SH BUILT-IN COMMANDS
+This is the list of all built-in commands.
+.IP cd
+changes current working directory to a given one
+.IP env
+prints the current enviroment to standard output
+.IP history
+prints the given commands passed to GIShell, to standard output
+.IP exit
+terminates program
+
+.SH EXAMPLE
+.TP
+An example of interactive mode for built-in command history
+.TP
+$ ./hsh
+.br
+$ history
+.br
+0  ls
+.br
+1  ls
+.br
+2  ls
+.br
+$
+.TP
+Now an example of non interactive mode for command ls
+.TP
+$ echo ls -l | ./hsh
+.br
+$ total 3396
+.br
+-rwxrwxr-x 1 vagrant vagrant   35587 Jul 19 02:14 a.out
+.br
+-rwxrwxr-x 1 vagrant vagrant   10386 Jul 18 21:50 cp
+.br
+-rw-rw-r-- 1 vagrant vagrant    1781 Jul 18 21:50 cp.c
+.br
+-rw-rw-r-- 1 vagrant vagrant    3899 Jul 19 00:01 customFunc.c
+.br
+-rw-rw-r-- 1 vagrant vagrant    3147 Jul 19 00:01 helperFunc.c
+.br
+-rw-rw-r-- 1 vagrant vagrant    1772 Jul 19 02:14 history.c
+.br
+ ...
+.br
+$
+
+.SH BUGS
+...
+
+.SH AUTHOR
+Minas Anton, Anoop Marchala.
