@@ -92,7 +92,7 @@ char *cur_pid(void)
 	}
 	else
 	{
-		pause = _itoa(cur, 1);
+		pause = intToString(cur, 1);
 		_strcat(locate, "/proc/");
 		_strcat(locate, pause);
 		_strcat(locate, "/stat");
@@ -126,7 +126,7 @@ void _to_buff(buffer *base, env_t *environ, int rt)
 		j = i + 1;
 		if (base->buf[base->bp + i + 1] == '?')
 		{
-			pause = _itoa(rt, 1);
+			pause = intToString(rt, 1);
 			rem_str(base, base->bp + i);
 			add_str(base, pause, base->bp + i);
 			_free(pause);
