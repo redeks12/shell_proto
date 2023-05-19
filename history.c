@@ -123,7 +123,7 @@ void show_hist(hist_t *main)
 	{
 		hist = duplicate(main->cmd);
 		_puts(hist);
-		_puts('\n');
+		_puts("\n");
 		// main = main->next;
 	}
 }

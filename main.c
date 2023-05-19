@@ -26,7 +26,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		if (!more_cmds(&b, retrn_value))
 		{
-			_puts('$ ');
+			_puts("$ ");
 			get_line(&b, STDIN_FILENO, env_p);
 			_checker(b.buf, env_p, 'a');
 		}

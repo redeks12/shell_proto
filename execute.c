@@ -112,6 +112,6 @@ int exec_part(char **arr, env_t *environ, int input_s)
 void _sig(int s)
 {
 	(void) s;
-	_puts('\n');
-	_puts('$ ');
+	_puts("\n");
+	_puts("$ ");
 }

@@ -81,8 +81,8 @@ void env_del(env_t **main, int num)
 	if (num == 0)
 	{
 		*main = (*main)->next;
-		_puts(new->value);
-		_puts(new);
+		_free(new->value);
+		_free(new);
 	}
 	else
 	{
@@ -94,7 +94,7 @@ void env_del(env_t **main, int num)
                 for (i = 0; i < num - 1; i++, new = new->next);
 		new_s = new->next;
 		new->next = new_s->next;
-		_puts(new_s);
+		_free(new_s);
 	}
 }
 /**
@@ -116,7 +116,7 @@ env_t *env_join(env_t **main, char *characters)
 		*main = new;
 	else
 	{
-                for (new_s = main; new_s->next != NULL; new_s = new_s->next);
+                for (new_s = *main; new_s->next != NULL; new_s = new_s->next);
 		// new_s = *main;
 		// while (new_s->next != NULL)
 		// 	new_s = new_s->next;
