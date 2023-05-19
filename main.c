@@ -1,56 +1,106 @@
-#include "shellHeader.h"
-#define UNUSED(x) (void)(x)
+#include "shell.h"
 /**
- * main - Entry point for hsh
- * @argc: attribute unused
- * @argv: attribute unused
- * @env: used to pass enviroment conf to functions
- * Return: Success or Failure
+ * main - Holberton Shell
+ * @argc: argument count
+ * @argv: a list of all arguments
+ * @envp: environmental variable list from the parent
+ * Return: 0 on success.
  */
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv, char **envp)
 {
-	char **tokens, *buffer = NULL, *home;
-	size_t bufsize = 0;
-	int check, isCmd, count = 1, interactive = 0;
-	struct stat sb;
+	char **arg_list;
+	env_t *env_p;
+	int retrn_value;
+	buffer b = {NULL, BUFSIZE, 0};
+	(void)argc, (void)argv, (void)envp;
 
-	UNUSED(argc);
-	signal(SIGINT, signal_handler);
-	if (fstat(STDIN_FILENO, &sb) == -1)
-		perror("Fstat error"), _exit(EXIT_FAILURE);
-	if ((sb.st_mode & S_IFMT) == S_IFIFO)
-		interactive = 1;
-	if (!interactive)
-		_printf("$ ");
-	home = gethome(env);
-	while (getline(&buffer, &bufsize, stdin) != -1)
+	b.buf = _malloc(sizeof(char) * b.size);
+	arg_list = NULL;
+	retrn_value = 0;
+
+	env_p = mk_env();
+	_checker("", env_p, 'c');
+	signal(SIGINT, SIG_IGN);
+	// signal(SIGINT, _sig);
+	while (1)
 	{
-		if (buffer[0] != '\n')
+		if (!more_cmds(&b, retrn_value))
 		{
-			ptofree(NULL, 0), history_file(buffer, home);
-			tokens = tokenize(buffer, " ");/*TOKENIZE & COMMAND CHECK*/
-			if (tokens == NULL)
-				perror("tokenize() Failed");
-			if (!_strcmp(tokens[0], "exit"))
-			{
-				ptofree(NULL, -1), free(tokens), free(buffer), free(home);
-				_exit(EXIT_SUCCESS);
-			}
-			isCmd = cmdchk(tokens, env);/*Check if cmd and if special cmd*/
-			if (isCmd == 0)/*COMMAND EXECUTION*/
-				check = cmdExec(tokens, env);
-			else if (isCmd >= 1)/*SPECIAL CMD EXECUTION*/
-				check = specialExec(tokens, env, isCmd, home);
-			else/*NO COMMAND FOUND*/
-				_printf("%s: %d: %s: not found\n", argv[0], count, tokens[0]);
-			if (check == EXIT_FAILURE)
-				perror("Execution Failed");
-			count++;
-			ptofree(NULL, -1), free(tokens);
+			_puts('$ ');
+			get_line(&b, STDIN_FILENO, env_p);
+			_checker(b.buf, env_p, 'a');
 		}
-		if (!interactive)
-			_printf("$ ");
+		while (aliase(&b, env_p))
+			;
+		_to_buff(&b, env_p, retrn_value);
+		read_file(&b, env_p);
+		break_buffer(&b, &arg_list);
+		if (arg_list[0] == NULL)
+			continue;
+		retrn_value = execute2(arg_list, env_p, b.size);
+		if (retrn_value != 0 && retrn_value != 2)
+			retrn_value = exec_part(arg_list, env_p, b.size);
 	}
-	free(buffer), free(home);
-	return (EXIT_SUCCESS);
+	return (0);
+}
+/**
+ * more_cmds - check the command line for the next command
+ * @b: buffer structure
+ * @retrn_value: Return value from last command
+ * Description: Controls the logic behind if multi-part input has more
+ *				commands to execute. Handles ; && and ||.
+ *				Will advance buffer to next command.
+ *
+ * Return: 1 if we have more commands to execute, 0 if we don't
+ */
+int more_cmds(buffer *b, int retrn_value)
+{
+	if (b->bp == 0)
+		return (0);
+
+	while (b->buf[b->bp] != '\0')
+	{
+		if (b->buf[b->bp] == ';')
+		{
+			trim_cmd(b);
+			return (1);
+		}
+		if (b->buf[b->bp] == '&' && retrn_value == 0)
+		{
+			trim_cmd(b);
+			return (1);
+		}
+		if (b->buf[b->bp] == '|' && retrn_value != 0)
+		{
+			trim_cmd(b);
+			return (1);
+		}
+		b->bp++;
+	}
+	b->bp = 0;
+	return (0);
+}
+/**
+ * trim_cmd - move past cmd flowcontrol point at given buffer position
+ * @b: buffer structure
+ * Description: Small helper function for function more_cmds. Advances
+ *				the buffer point past command control characters.
+ */
+void trim_cmd(buffer *b)
+{
+	int flag;
+
+	flag = 0;
+	while (b->buf[b->bp] == ';')
+		b->bp++, flag = 1;
+	if (flag)
+		return;
+
+	while (b->buf[b->bp] == '|')
+		b->bp++, flag = 1;
+	if (flag)
+		return;
+
+	while (b->buf[b->bp] == '&')
+		b->bp++;
 }
