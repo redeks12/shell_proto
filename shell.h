@@ -173,8 +173,8 @@ int unsetenv_shell(char **arr, env_t *environ);
 int _a_shell(char **arr, env_t *environ, int type);
 
 
-char* intToString(int num, int mode);
-// char *_itoa(int num, int mode);
+// char* intToString(int num, int mode);
+char *_itoa(int num, int mode);
 
 env_t *mk_env(void);
 void cng_env(env_t *environ, char *type, char *new_char, int size);

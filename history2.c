@@ -120,7 +120,7 @@ void show_hist_2(hist_t *old_cmd)
 	new_s = old_cmd;
 	while (new_s != NULL)
 	{
-		string = intToString(i, 2);
+		string = _itoa(i, 2);
 		_puts(" ");
 		_puts(string);
 		_puts(" ");

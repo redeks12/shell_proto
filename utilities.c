@@ -39,93 +39,93 @@ char **arr_init(env_t *environ)
 	arr[i] = NULL;
 	return (arr);
 }
-char* intToString(int num, int mode)
-{
-    char* numStr;
-    int currentIndex, exp, i, tempExp;
-
-    numStr = _malloc(sizeof(char) * BUFSIZE);
-    _memset(numStr, '\0', BUFSIZE);
-    exp = 1000000000;
-    currentIndex = 0;
-
-    if (num != 0)
-    {
-        while ((num / exp) == 0)
-            exp /= 10;
-        
-        tempExp = exp;
-
-        while (tempExp < 1000 && mode == 2)
-        {
-            numStr[currentIndex++] = '0';
-            tempExp *= 10;
-        }
-
-        while (exp >= 1)
-        {
-            numStr[currentIndex++] = (num / exp) + '0';
-            num %= exp;
-            exp /= 10;
-        }
-    }
-    else
-    {
-        if (mode == 2)
-        {
-            for (i = 0; i < 4; i++)
-                numStr[i] = '0';
-        }
-        else
-            numStr[0] = '0';
-    }
-
-    return numStr;
-}
-// /**
-//  * _itoa - interger to string converter
-//  * @num: number to convert
-//  * @mode: mode to determine how to deal with 0
-//  * Return: a string for the number
-//  */
-// char *_itoa(int num, int mode)
+// char* intToString(int num, int mode)
 // {
-// 	char *num_str;
-// 	int index, exp, i, temp_exp;
+//     char* numStr;
+//     int currentIndex, exp, i, tempExp;
 
-// 	num_str = malloc(sizeof(char) * BUFSIZE);
-// 	memset(num_str, '\0', BUFSIZE);
-// 	exp = 1000000000;
-// 	index = 0;
-// 	if (num != 0)
-// 	{
-// 		while ((num / exp) == 0)
-// 			exp /= 10;
-// 		temp_exp = exp;
-// 		while (temp_exp < 1000 && mode == 2)
-// 		{
-// 			num_str[index++] = 0 + '0';
-// 			temp_exp *= 10;
-// 		}
-// 		while (exp >= 1)
-// 		{
-// 			num_str[index++] = (num / exp) + '0';
-// 			num %= exp;
-// 			exp /= 10;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		if (mode == 2)
-// 		{
-// 			for (i = 0; i < 4; i++)
-// 				num_str[i] = 0 + '0';
-// 		}
-// 		else
-// 			num_str[0] = 0 + '0';
-// 	}
-// 	return (num_str);
+//     numStr = _malloc(sizeof(char) * BUFSIZE);
+//     _memset(numStr, '\0', BUFSIZE);
+//     exp = 1000000000;
+//     currentIndex = 0;
+
+//     if (num != 0)
+//     {
+//         while ((num / exp) == 0)
+//             exp /= 10;
+        
+//         tempExp = exp;
+
+//         while (tempExp < 1000 && mode == 2)
+//         {
+//             numStr[currentIndex++] = '0';
+//             tempExp *= 10;
+//         }
+
+//         while (exp >= 1)
+//         {
+//             numStr[currentIndex++] = (num / exp) + '0';
+//             num %= exp;
+//             exp /= 10;
+//         }
+//     }
+//     else
+//     {
+//         if (mode == 2)
+//         {
+//             for (i = 0; i < 4; i++)
+//                 numStr[i] = '0';
+//         }
+//         else
+//             numStr[0] = '0';
+//     }
+
+//     return numStr;
 // }
+/**
+ * _itoa - interger to string converter
+ * @num: number to convert
+ * @mode: mode to determine how to deal with 0
+ * Return: a string for the number
+ */
+char *_itoa(int num, int mode)
+{
+	char *num_str;
+	int index, exp, i, temp_exp;
+
+	num_str = malloc(sizeof(char) * BUFSIZE);
+	memset(num_str, '\0', BUFSIZE);
+	exp = 1000000000;
+	index = 0;
+	if (num != 0)
+	{
+		while ((num / exp) == 0)
+			exp /= 10;
+		temp_exp = exp;
+		while (temp_exp < 1000 && mode == 2)
+		{
+			num_str[index++] = 0 + '0';
+			temp_exp *= 10;
+		}
+		while (exp >= 1)
+		{
+			num_str[index++] = (num / exp) + '0';
+			num %= exp;
+			exp /= 10;
+		}
+	}
+	else
+	{
+		if (mode == 2)
+		{
+			for (i = 0; i < 4; i++)
+				num_str[i] = 0 + '0';
+		}
+		else
+			num_str[0] = 0 + '0';
+	}
+	return (num_str);
+}
 /**
  * is_w - chaecks for whitespace
  * @c: char to evalute.
