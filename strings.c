@@ -7,18 +7,18 @@
  */
 void rem_str(buffer *str, int n)
 {
-	int i;
+	int i = 0;
 
-        for (i = 0; !(is_w(str->buf[n + i]) || input_finish(str->buf[n + i])); i++)
-        {
-                str->buf[n + i] = ' ';
-        }
+        // for (i = 0; !(is_w(str->buf[n + i]) || input_finish(str->buf[n + i])); i++)
+        // {
+        //         str->buf[n + i] = ' ';
+        // }
         
-	// while (!(is_w(str->buf[n + i]) || input_finish(str->buf[n + i])))
-	// {
-	// 	str->buf[n + i] = ' ';
-	// 	i++;
-	// }
+	while (!(is_w(str->buf[n + i]) || input_finish(str->buf[n + i])))
+	{
+		str->buf[n + i] = ' ';
+		i++;
+	}
 }
 /**
  * add_str - add a new string into a buffer at a certan position
@@ -34,13 +34,13 @@ void add_str(buffer *b, char *str, int position)
 	rem_str(b, position);
 
 	i = 0;
-        for (i = 0; is_w(b->buf[position + i]) && (position + i) < b->size; i++);
-	// while (is_w(b->buf[position + i]) && (position + i) < b->size)
-	// 	i++;
-	// if (i >  _strlen(str))
-	// 	; /* insert happens below */
-	// else
-        if (i <= _strlen(str))
+        // for (i = 0; is_w(b->buf[position + i]) && (position + i) < b->size; i++);
+	while (is_w(b->buf[position + i]) && (position + i) < b->size)
+		i++;
+	if (i >  _strlen(str))
+		; /* insert happens below */
+	else
+        // if (i <= _strlen(str))
 	{
 		length = b->bp;
 		length += _strlen(b->buf + b->bp);
