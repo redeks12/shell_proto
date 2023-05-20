@@ -145,4 +145,21 @@ void _to_buff(buffer *base, env_t *environ, int rt)
 				add_str(base, pause, base->bp + i);
 		}
 	}
+}/**
+ * _strcat - concatenate two strings
+ * @dest : pointer
+ * @src : pointer 2
+ * Return: Always 0.
+ */
+char *_strcat(char *dest, char *src)
+{
+	int a, b;
+
+	for (a = 0; dest[a] != '\0'; a++)
+		;
+	for (b = 0; src[b] != '\0'; b++)
+	{
+		dest[a + b] = src[b];
+	}
+	return (dest);
 }
