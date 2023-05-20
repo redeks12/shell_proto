@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **envp)
 	env_p = mk_env();
 	_checker("", env_p, 'c');
 	signal(SIGINT, SIG_IGN);
-	// signal(SIGINT, _sig);
+	signal(SIGINT, _sig);
 	while (1)
 	{
 		if (!more_cmds(&b, retrn_value))
