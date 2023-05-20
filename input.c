@@ -64,7 +64,7 @@ int read_file(buffer *b, env_t *envp)
 		// while (!is_w(b->buf[i]) && b->buf[i] != '\0')
 		// 	i++;
 		b->buf[i] = '\0';
-		make_path(&fullfile, file, "PWD", envp);
+		new_pth(&fullfile, file, "PWD", envp);
 		fd = open(fullfile, O_RDONLY);
 	}
 	if (fd == -1)
