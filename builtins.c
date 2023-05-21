@@ -16,7 +16,7 @@ int exit_shell(char **arr, env_t *environ, int size)
 		if (!(is_digit(arr[1][0])))
 		{
 			/*_puts("exit: Expression Syntax.\n");*/
-			return (EXIT_FAILURE + 1);
+			return (2);
 		}
 	}
 	var_e = _atoi(arr[1]);
