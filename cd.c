@@ -11,7 +11,6 @@
 char *func_cd(char **new_dir, env_t *environ, int size)
 {
 	char *pt;
-	char *next;
 	int i, j;
 
 	pt = _malloc(sizeof(char) * size);
@@ -70,12 +69,12 @@ int cd_shell(char **arr, env_t *environ, int size)
 	getcwd(cur_dir, size);
 	pth = func_cd(arr, environ, size);
 	if (pth == NULL)
-		return (EXIT_FAILURE + 1);
+		return (2);
 	l = chdir(pth);
 	if (l < 0)
 	{
 		/*write(0, "Error: no such file or directory\n", 33);*/
-		return (EXIT_FAILURE + 1);
+		return (2);
 	}
 	else
 	{
