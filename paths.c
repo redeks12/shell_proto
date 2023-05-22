@@ -34,12 +34,20 @@ int mk_pth(char *input, char **find)
 	int i, file;
 
         i = 0;
-
+	int bl = ARRAY_SIZE(find);
+	_puts("before join");
+	while (i < bl)
+		_puts(find[i]), _puts("\n"), i++;
+	i = 0;
 	// for (i = 0; find[i] != NULL; i++)
         while (find[i] != NULL)
 	{
 		_strncat(find[i], input, _strlen(input));
 		file = open(find[i], O_RDONLY);
+		_puts("after join");
+		_puts(find[i]), _puts("\n");
+		print_int(file);
+		_puts("\n");
 		if (file > 0)
 		{
 			close(file);
