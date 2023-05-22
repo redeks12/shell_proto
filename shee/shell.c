@@ -14,32 +14,32 @@ int main(int argc, char **argv, char **envp)
 	buffer b = {NULL, BUFSIZE, 0};
 	(void)argc, (void)argv, (void)envp;
 
-	b.buf = _malloc(sizeof(char) * b.size);
+	b.buf = safe_malloc(sizeof(char) * b.size);
 	arg_list = NULL;
 	retrn_value = 0;
 
-	env_p = mk_env();
-	_checker("", env_p, 'c');
+	env_p = create_envlist();
+	history_wrapper("", env_p, 'c');
 	signal(SIGINT, SIG_IGN);
-	// signal(SIGINT, _sig);
+	signal(SIGINT, signal_handler);
 	while (1)
 	{
 		if (!more_cmds(&b, retrn_value))
 		{
-			_puts('$ ');
-			get_line(&b, STDIN_FILENO, env_p);
-			_checker(b.buf, env_p, 'a');
+			print_cmdline();
+			_getline(&b, STDIN_FILENO, env_p);
+			history_wrapper(b.buf, env_p, 'a');
 		}
-		while (aliase(&b, env_p))
+		while (alias_expansion(&b, env_p))
 			;
-		_to_buff(&b, env_p, retrn_value);
-		read_file(&b, env_p);
-		break_buffer(&b, &arg_list);
+		variable_expansion(&b, env_p, retrn_value);
+		_getline_fileread(&b, env_p);
+		tokenize_buf(&b, &arg_list);
 		if (arg_list[0] == NULL)
 			continue;
-		retrn_value = execute2(arg_list, env_p, b.size);
+		retrn_value = run_builtin(arg_list, env_p, b.size);
 		if (retrn_value != 0 && retrn_value != 2)
-			retrn_value = exec_part(arg_list, env_p, b.size);
+			retrn_value = run_execute(arg_list, env_p, b.size);
 	}
 	return (0);
 }
