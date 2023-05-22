@@ -33,7 +33,6 @@ char **break_pth(char **find, char *locate, int size)
 	do {
 		if (*new == ':' || *new == '\0')
 		{
-			space[0] = '\0';
 			_strncat(space, "/", 1);
 			find[idx] = _malloc(sizeof(char) * size);
 			find[idx][0] = '\0';
@@ -57,7 +56,7 @@ char **break_pth(char **find, char *locate, int size)
 			
 	} while (*new++);
 	find[idx] = _malloc(sizeof(char *));
-	find[idx] = NULL;
+	find[idx] = "/bin/";
 	return (find);
 }
 /**
