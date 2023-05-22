@@ -48,7 +48,7 @@ int execute_func(char *cmd, char **args, env_t *envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		array = list_to_array(envp);
+		array = arr_init(envp);
 		i = execve(cmd, args, array);
 		if (i < 0)
 		{
