@@ -63,7 +63,7 @@ char **tokenize_path(char **search_path, char *path, int size)
 			_strncat(search_path[s_index], buffer, _strlen(buffer));
 			s_index++;
 			buffer[0] = '\0';
-			puts(search_path[s_index]);
+			printf("%s\n",search_path[s_index]);
 		}
 		else
 			_strncat(buffer, temp, 1);
