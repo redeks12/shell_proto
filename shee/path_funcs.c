@@ -35,6 +35,14 @@ int get_path(char *path, env_t *list)
  * found in path.
  * Return: a 2D array of tokens
  */
+void _puts(char *str)
+{
+	while (*str != '\0')
+	{
+		_putchar(*str++);
+	}
+	// _putchar('\n');
+}
 
 char **tokenize_path(char **search_path, char *path, int size)
 {
@@ -54,6 +62,7 @@ char **tokenize_path(char **search_path, char *path, int size)
 	for (temp = path; *temp != '='; temp++)
 		;
 	temp++, s_index = 0;
+	int l = 0;
 	do {
 		if (*temp == ':' || *temp == '\0')
 		{
@@ -61,9 +70,11 @@ char **tokenize_path(char **search_path, char *path, int size)
 			search_path[s_index] = safe_malloc(sizeof(char) * size);
 			search_path[s_index][0] = '\0';
 			_strncat(search_path[s_index], buffer, _strlen(buffer));
+			_puts(search_path[l]);
+			_puts("\n");
+			l++;
 			s_index++;
 			buffer[0] = '\0';
-			// printf("%s\n",search_path[s_index]);
 		}
 		else
 			_strncat(buffer, temp, 1);
