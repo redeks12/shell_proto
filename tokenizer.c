@@ -16,6 +16,7 @@ char **break_pth(char **find, char *locate, int size)
 	space[0] = '\0';
         i = 0;
         ct = 1;
+	int l =0;
 	// for (i = 0, ct = 1; locate[i] != '\0'; i++)
         while (locate[i] != '\0')
 	{
@@ -38,8 +39,9 @@ char **break_pth(char **find, char *locate, int size)
 			_strncat(find[idx], space, _strlen(space));
 			idx++;
 			space[0] = '\0';
-			_puts(find[new]);
+			_puts(find[l]);
 			_puts("\n");
+			l++;
 		}
 		else
 			_strncat(space, new, 1);
