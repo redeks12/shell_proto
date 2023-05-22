@@ -41,7 +41,7 @@ int main(int argc, char **argv, char **envp)
 		if (retrn_value != 0 && retrn_value != 2)
 		{
 			_puts("oya we reach d end\n");
-			_puts(arg_list);
+			_puts(arg_list[0]);
 			retrn_value = exec_part(arg_list, env_p, b.size);
 		}
 			
