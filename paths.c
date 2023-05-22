@@ -35,8 +35,8 @@ int mk_pth(char *input, char **find)
 
         i = 0;
 
-	// for (i = 0; find[i] != NULL; i++)
-        while (find[i] != NULL)
+	for (i = 0; find[i] != NULL; i++)
+        // while (find[i] != NULL)
 	{
 		_strncat(find[i], input, _strlen(input));
 		file = open(find[i], O_RDONLY);
@@ -46,8 +46,8 @@ int mk_pth(char *input, char **find)
 			_strcpy(input, find[i]);
 			return (EXIT_SUCCESS);
 		}
-                i++;
+                // i++;
 	}
-	write(0, "12344command not found\n", 25);
+	write(0, "Error: command not found\n", 25);
 	return (-1);
 }
