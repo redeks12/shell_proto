@@ -50,6 +50,7 @@ int main_execute(char *input, char **array, env_t *environ)
 	{
 		arr_s = arr_init(environ);
 		i = execve(input, array, arr_s);
+		printf("%d\n\n\n", i);
 		if (i < 0)
 		{
 			_puts("Error: command not found\n");

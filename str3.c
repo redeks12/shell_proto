@@ -16,7 +16,7 @@ int strictStringMatch(const char *string1, const char *string2)
     while (string1[idx] == string2[idx])
     {
         if (string1[idx] == '\0' || string2[idx] == '\0')
-            return 1;
+            return (1);
         idx++;
     }
     
