@@ -95,8 +95,8 @@ int exec_part(char **arr, env_t *environ, int input_s)
 			return (127);
 		}
 		find = break_pth(find, locate, input_s);
-		// _puts(find[0]);
-		// _puts("\n");
+		_puts(find[0]);
+		_puts("\n");
 		i = mk_pth(inp, find);
 		// _puts(inp);
 		// _puts("\n\n");
