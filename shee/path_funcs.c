@@ -81,7 +81,15 @@ char **tokenize_path(char **search_path, char *path, int size)
 			buffer[0] = '\0';
 		}
 		else
+		{
+			_puts(buffer);
+			_puts("\n");
+			_puts(new);
+			_puts("\n");
+			
 			_strncat(buffer, temp, 1);
+		}
+			
 	} while (*temp++);
 	search_path[s_index] = safe_malloc(sizeof(char *));
 	search_path[s_index] = NULL;
