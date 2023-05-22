@@ -105,7 +105,7 @@ int exec_part(char **arr, env_t *environ, int input_s)
 		i = mk_pth(inp, find);
 		print_int(i);
 		_puts("\n");
-		if (i == 0)
+		// if (i == 0)
 			st = main_execute(inp, arr, environ);
 	}
 	if (i == 0)
