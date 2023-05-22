@@ -38,7 +38,7 @@ char **break_pth(char **find, char *locate, int size)
 			_strncat(find[idx], space, _strlen(space));
 			idx++;
 			space[0] = '\0';
-			_puts(find[0]);
+			_puts(find[new]);
 			_puts("\n");
 		}
 		else
