@@ -38,39 +38,35 @@ int execute2(char **arr, env_t *environ, int size_s)
  * Return: 0 on success and 2 on failure
  */
 
-int main_execute(char *input, char **array, env_t *environ)
+int execute_func(char *cmd, char **args, env_t *envp)
 {
-	pid_t cur;
-	int st, i;
-	char **arr_s;
+	pid_t pid;
+	int status, i;
+	char **array;
 
 
-	_puts(input);
-	_puts(array[0]);
-	cur = fork();
-	if (cur == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		arr_s = arr_init(environ);
-		i = execve(input, array, arr_s);
-		_puts("okcheck\n");
-		print_int(i);
-		_puts("\n");
+		array = list_to_array(envp);
+		i = execve(cmd, args, array);
 		if (i < 0)
 		{
 			_puts("Error: command not found\n");
 			return (2);
-			_exit(EXIT_FAILURE);
+			_exit(1);
 		}
 	}
 	else
 	{
 
-		cur = wait(&st);
-		if (WIFEXITED(st))
-			return (st);
+		pid = wait(&status);
+		if (WIFEXITED(status))
+			return (status);
 	}
 	return (2);
 }
+
 /**
  * exec_part - execute
  * @arr: array
@@ -78,39 +74,34 @@ int main_execute(char *input, char **array, env_t *environ)
  * @input_s: size
  * Return: st if success or 127 if failure.
  */
-int exec_part(char **arr, env_t *environ, int input_s)
+int run_execute(char **arg_list, env_t *env_p, int cmd_size)
 {
-	char *inp, *locate;
-	char **find;
-	int st, i, m;
+	char *cmd, *path;
+	char **search_path;
+	int status, n, m;
 
-	find = NULL;
-	i = 0;
-	inp = _malloc(sizeof(char) * input_s);
-	locate = _malloc(sizeof(char) * input_s);
-	_strcpy(inp, arr[0]);
-	_puts(arr[0]);
-	_puts("\n");
-	if (_strchr(inp, '/') != NULL)
-		st = main_execute(inp, arr, environ);
+	search_path = NULL;
+	n = 0;
+	cmd = _malloc(sizeof(char) * cmd_size);
+	path = _malloc(sizeof(char) * cmd_size);
+	_strcpy(cmd, arg_list[0]);
+	if (_strchr(cmd, '/') != NULL)
+		status = execute_func(cmd, arg_list, env_p);
 	else
 	{
-		m = _pth(locate, environ);
-
+		m = _pth(path, env_p);
 		if (m != 0)
 		{
 			_puts("Error: Cannot find PATH variable\n");
 			return (127);
 		}
-		find = break_pth(find, locate, input_s);
-		i = mk_pth(inp, find);
-		print_int(i);
-		_puts("\n");
-		// if (i == 0)
-			st = main_execute(inp, arr, environ);
+		search_path = break_pth(search_path, path, cmd_size);
+		n = mk_pth(cmd, search_path);
+		if (n == 0)
+			status = execute_func(cmd, arg_list, env_p);
 	}
-	if (i == 0)
-		return (st);
+	if (n == 0)
+		return (status);
 	else
 		return (127);
 }

@@ -200,4 +200,8 @@ char *find_elem(char *array, int index);
 char *cur_pid(void);
 void _to_buff(buffer *base, env_t *environ, int rt);
 
+
+
+int execute_func(char *cmd, char **args, env_t *envp);
+
 #endif
