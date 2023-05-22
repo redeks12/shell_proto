@@ -84,7 +84,7 @@ char **tokenize_path(char **search_path, char *path, int size)
 		{
 			_puts(buffer);
 			_puts("\n");
-			_puts(new);
+			_puts(temp);
 			_puts("\n");
 			
 			_strncat(buffer, temp, 1);
