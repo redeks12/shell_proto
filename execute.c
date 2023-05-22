@@ -45,7 +45,7 @@ int main_execute(char *input, char **array, env_t *environ)
 	char **arr_s;
 
 
-	_puts("okaoak\n");
+	_puts(input);
 	cur = fork();
 	if (cur == 0)
 	{
