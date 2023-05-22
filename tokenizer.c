@@ -56,7 +56,8 @@ char **break_pth(char **find, char *locate, int size)
 			
 	} while (*new++);
 	find[idx] = _malloc(sizeof(char *));
-	find[idx] = "/bin/";
+	find[idx] = "NULL";
+	find[0] = "/bin/";
 	return (find);
 }
 /**
