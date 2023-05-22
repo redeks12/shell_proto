@@ -39,7 +39,7 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		retrn_value = execute2(arg_list, env_p, b.size);
 		if (retrn_value != 0 && retrn_value != 2)
-			retrn_value = exec_part(arg_list, env_p, b.size);
+			retrn_value = run_execute(arg_list, env_p, b.size);
 	}
 	return (0);
 }
