@@ -46,18 +46,17 @@ char **break_pth(char **find, char *locate, int size)
 		}
 		else
 		{
-			// _puts("else\n");
-			// _puts(space);
-			// _puts("\n");
-			// _puts(new);
-			// _puts("\n");
+			_puts("else\n");
+			_puts(space);
+			_puts("\n");
+			_puts(new);
+			_puts("\n");
 			_strncat(space, new, 1);
 		}
 			
 	} while (*new++);
 	find[idx] = _malloc(sizeof(char *));
-	find[idx] = "NULL";
-	// find[0] = "/bin/";
+	find[idx] = NULL;
 	return (find);
 }
 /**
