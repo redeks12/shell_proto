@@ -38,35 +38,34 @@ int execute2(char **arr, env_t *environ, int size_s)
  * Return: 0 on success and 2 on failure
  */
 
-int execute_func(char *cmd, char **args, env_t *envp)
+int main_execute(char *input, char **array, env_t *environ)
 {
-	pid_t pid;
-	int status, i;
-	char **array;
+	pid_t cur;
+	int st, i;
+	char **arr_s;
 
 
-	pid = fork();
-	if (pid == 0)
+	cur = fork();
+	if (cur == 0)
 	{
-		array = arr_init(envp);
-		i = execve(cmd, args, array);
+		arr_s = arr_init(environ);
+		i = execve(input, array, arr_s);
 		if (i < 0)
 		{
 			_puts("Error: command not found\n");
 			return (2);
-			_exit(1);
+			_exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
 
-		pid = wait(&status);
-		if (WIFEXITED(status))
-			return (status);
+		cur = wait(&st);
+		if (WIFEXITED(st))
+			return (st);
 	}
 	return (2);
 }
-
 /**
  * exec_part - execute
  * @arr: array
@@ -74,34 +73,34 @@ int execute_func(char *cmd, char **args, env_t *envp)
  * @input_s: size
  * Return: st if success or 127 if failure.
  */
-int run_execute(char **arg_list, env_t *env_p, int cmd_size)
+int exec_part(char **arr, env_t *environ, int input_s)
 {
-	char *cmd, *path;
-	char **search_path;
-	int status, n, m;
+	char *inp, *locate;
+	char **find;
+	int st, i, m;
 
-	search_path = NULL;
-	n = 0;
-	cmd = _malloc(sizeof(char) * cmd_size);
-	path = _malloc(sizeof(char) * cmd_size);
-	_strcpy(cmd, arg_list[0]);
-	if (_strchr(cmd, '/') != NULL)
-		status = execute_func(cmd, arg_list, env_p);
+	find = NULL;
+	i = 0;
+	inp = _malloc(sizeof(char) * input_s);
+	locate = _malloc(sizeof(char) * input_s);
+	_strcpy(inp, arr[0]);
+	if (_strchr(inp, '/') != NULL)
+		st = main_execute(inp, arr, environ);
 	else
 	{
-		m = _pth(path, env_p);
+		m = _pth(locate, environ);
 		if (m != 0)
 		{
 			_puts("Error: Cannot find PATH variable\n");
 			return (127);
 		}
-		search_path = break_pth(search_path, path, cmd_size);
-		n = mk_pth(cmd, search_path);
-		if (n == 0)
-			status = execute_func(cmd, arg_list, env_p);
+		find = break_pth(find, locate, input_s);
+		i = mk_pth(inp, find);
+		if (i == 0)
+			st = main_execute(inp, arr, environ);
 	}
-	if (n == 0)
-		return (status);
+	if (i == 0)
+		return (st);
 	else
 		return (127);
 }

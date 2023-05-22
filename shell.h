@@ -202,6 +202,5 @@ void _to_buff(buffer *base, env_t *environ, int rt);
 
 
 
-int execute_func(char *cmd, char **args, env_t *envp);
-int run_execute(char **arg_list, env_t *env_p, int cmd_size);
+
 #endif
