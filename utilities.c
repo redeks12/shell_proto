@@ -11,12 +11,12 @@ char **arr_init(env_t *environ)
 	env_t *new;
 	int ct, i, j;
 
-        ct = 0;
-        new = environ;
-        while (new != NULL)
-                ct++, new = new->next;
-	// for (new = environ, ct = 0; new != NULL; new = new->next)
-	// 	ct++;
+        // ct = 0;
+        // new = environ;
+        // while (new != NULL)
+        //         ct++, new = new->next;
+	for (new = environ, ct = 0; new != NULL; new = new->next)
+		ct++;
 	arr = malloc(sizeof(char *) * (ct + 1));
 
         new = environ;
@@ -27,7 +27,8 @@ char **arr_init(env_t *environ)
 		arr[i] = _malloc(sizeof(char) * (j + 1));
 		_memset(arr[i], '\0', (j + 1));
 		_memcpy(arr[i], new->value, j);
-                i++, new = new->next;
+                i++;
+		new = new->next;
         }
 	// for (new = environ, i = 0; new != NULL; new = new->next, i++)
 	// {
