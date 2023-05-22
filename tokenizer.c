@@ -40,8 +40,9 @@ char **break_pth(char **find, char *locate, int size)
 			idx++;
 			space[0] = '\0';
 			_puts("if..");
-			_puts(find[idx]);
+			_puts(find[l]);
 			_puts("\n");
+			l++;
 		}
 		else
 		{
