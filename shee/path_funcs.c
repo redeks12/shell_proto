@@ -35,6 +35,10 @@ int get_path(char *path, env_t *list)
  * found in path.
  * Return: a 2D array of tokens
  */
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
+}
 void _puts(char *str)
 {
 	while (*str != '\0')
