@@ -39,11 +39,20 @@ char **break_pth(char **find, char *locate, int size)
 			_strncat(find[idx], space, _strlen(space));
 			idx++;
 			space[0] = '\0';
+			_puts("if..");
 			_puts(find[idx]);
 			_puts("\n");
 		}
 		else
+		{
+			_puts("else\n");
+			_puts(space);
+			_puts("\n");
+			_puts(new);
+			_puts("\n");
 			_strncat(space, new, 1);
+		}
+			
 	} while (*new++);
 	find[idx] = _malloc(sizeof(char *));
 	find[idx] = NULL;
