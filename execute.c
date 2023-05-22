@@ -45,12 +45,15 @@ int main_execute(char *input, char **array, env_t *environ)
 	char **arr_s;
 
 
+	_puts("okaoak\n");
 	cur = fork();
 	if (cur == 0)
 	{
 		arr_s = arr_init(environ);
 		i = execve(input, array, arr_s);
-		// print_int(i);
+		_puts("okcheck\n");
+		print_int(i);
+		_puts("\n");
 		if (i < 0)
 		{
 			_puts("Error: command not found\n");
