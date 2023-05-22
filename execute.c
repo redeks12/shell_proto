@@ -46,6 +46,7 @@ int main_execute(char *input, char **array, env_t *environ)
 
 
 	_puts(input);
+	_puts(array[0]);
 	cur = fork();
 	if (cur == 0)
 	{
