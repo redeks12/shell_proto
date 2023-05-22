@@ -49,5 +49,5 @@ int mk_pth(char *input, char **find)
                 i++;
 	}
 	write(0, "Error: command not found\n", 25);
-	return (0);
+	return (-1);
 }

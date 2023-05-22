@@ -85,11 +85,14 @@ int exec_part(char **arr, env_t *environ, int input_s)
 	inp = _malloc(sizeof(char) * input_s);
 	locate = _malloc(sizeof(char) * input_s);
 	_strcpy(inp, arr[0]);
+	_puts(arr[0]);
+	_puts("\n");
 	if (_strchr(inp, '/') != NULL)
 		st = main_execute(inp, arr, environ);
 	else
 	{
 		m = _pth(locate, environ);
+
 		if (m != 0)
 		{
 			_puts("Error: Cannot find PATH variable\n");
@@ -97,6 +100,8 @@ int exec_part(char **arr, env_t *environ, int input_s)
 		}
 		find = break_pth(find, locate, input_s);
 		i = mk_pth(inp, find);
+		print_int(i);
+		_puts("\n");
 		if (i == 0)
 			st = main_execute(inp, arr, environ);
 	}
