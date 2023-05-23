@@ -38,7 +38,7 @@ char **break_pth(char **search_path, char *path, int size)
 		else
 			_strncat(buffer, temp, 1);
 	} while (*temp++);
-	search_path[s_index] = _malloc(sizeof(char *));
+	// search_path[s_index] = _malloc(sizeof(char *));
 	search_path[s_index] = NULL;
 	return (search_path);
 }
