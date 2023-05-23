@@ -182,9 +182,9 @@ void env_del(env_t **main, int num);
 void env_shw(env_t *main);
 env_t *env_join(env_t **main, char *characters);
 
-int _pth(char *locate, env_t *environ);
-int mk_pth(char *input, char **find);
-char **break_pth(char **find, char *locate, int size);
+int _pth(char *path, env_t *list);
+int mk_pth(char *cmd, char **search_path);
+char **break_pth(char **search_path, char *path, int size);
 int execute2(char **arr, env_t *environ, int size_s);
 int exec_part(char **arr, env_t *environ, int input_s);
 int main_execute(char *input, char **array, env_t *environ);

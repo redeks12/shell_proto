@@ -7,58 +7,40 @@
  * Return: a 2D array of tokens
  */
 
-char **break_pth(char **find, char *locate, int size)
+char **break_pth(char **search_path, char *path, int size)
 {
-	int i, ct, idx;
-	char *new, *space;
+	int i, count, s_index;
+	char *temp, *buffer;
 
-	space = _malloc(sizeof(char) * size);
-	space[0] = '\0';
-        i = 0;
-        ct = 1;
-	int l =0;
-	// for (i = 0, ct = 1; locate[i] != '\0'; i++)
-        while (locate[i] != '\0')
+	buffer = _malloc(sizeof(char) * size);
+	buffer[0] = '\0';
+	for (i = 0, count = 1; path[i] != '\0'; i++)
 	{
-		if (locate[i] == ':')
-			ct++;
-                i++;
+		if (path[i] == ':')
+			count++;
 	}
-	ct++;
-	find = _malloc(sizeof(char *) * ct);
+	count++;
+	search_path = _malloc(sizeof(char *) * count);
 	/* skip the PATH= */
-	for (new = locate; *new != '='; new++);
-        
-	new++, idx = 0;
+	for (temp = path; *temp != '='; temp++)
+		;
+	temp++, s_index = 0;
 	do {
-		if (*new == ':' || *new == '\0')
+		if (*temp == ':' || *temp == '\0')
 		{
-			_strncat(space, "/", 1);
-			find[idx] = _malloc(sizeof(char) * size);
-			find[idx][0] = '\0';
-			_strncat(find[idx], space, _strlen(space));
-			idx++;
-			space[0] = '\0';
-			_puts("if..");
-			_puts(find[l]);
-			_puts("\n");
-			l++;
+			_strncat(buffer, "/", 1);
+			search_path[s_index] = _malloc(sizeof(char) * size);
+			search_path[s_index][0] = '\0';
+			_strncat(search_path[s_index], buffer, _strlen(buffer));
+			s_index++;
+			buffer[0] = '\0';
 		}
 		else
-		{
-			// _puts("else\n");
-			// _puts(space);
-			// _puts("\n");
-			// _puts(new);
-			// _puts("\n");
-			_strncat(space, new, 1);
-		}
-			
-	} while (*new++);
-	find[idx] = _malloc(sizeof(char *));
-	find[idx] = NULL;
-	find[0] = "/bin/";
-	return (find);
+			_strncat(buffer, temp, 1);
+	} while (*temp++);
+	search_path[s_index] = _malloc(sizeof(char *));
+	search_path[s_index] = NULL;
+	return (search_path);
 }
 /**
  * break_buffer - tokenize buffer by inputting NULLs and filling **av
