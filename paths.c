@@ -35,9 +35,6 @@ int mk_pth(char *input, char **find)
 
         i = 0;
 	int bl = ARRAY_SIZE(find);
-	while (i < bl)
-		_puts(find[i]), _puts("\n"), i++;
-	i = 0;
 	// for (i = 0; find[i] != NULL; i++)
         while (find[i] != NULL)
 	{
