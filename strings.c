@@ -25,14 +25,15 @@ void rem_str(buff_t *str, int n)
 void add_str(buff_t *b, char *str, int position)
 {
 	unsigned int i, length;
-	int j;
+	int j, s;
 
 	rem_str(b, position);
 
 	i = 0;
 	while (is_w(b->b_s[position + i]) && (position + i) < b->sz)
 		i++;
-	if (i >  _strlen(str))
+	s = i;
+	if (s >  _strlen(str))
 		; /* insert happens below */
 	else
 	{
