@@ -31,10 +31,9 @@ int _pth(char *locate, list_e *environ)
  */
 int mk_pth(char *input, char **find)
 {
-	int i, file, bl;
+	int i, file;
 
         i = 0;
-	bl = ARRAY_SIZE(find);
 
         while (find[i] != NULL)
 	{

@@ -16,7 +16,7 @@ void _puts(char *str)
 void print_int(int num)
 {
     char str[10];
-    int index = 0, i;
+    int index = 0, i, j;
     char temp;
 
     if (num < 0) {
