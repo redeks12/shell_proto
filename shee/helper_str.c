@@ -66,32 +66,32 @@ char *_strcat(char *dest, char *src)
 }
 
 
-/**
- * _strncat - concatenates one string (number of byte given)
- * to another
- * @dest: where to concatenate
- * @src: string to concatenate
- * @n: how many bytes to
- * Return: dest
- */
+// /**
+//  * _strncat - concatenates one string (number of byte given)
+//  * to another
+//  * @dest: where to concatenate
+//  * @src: string to concatenate
+//  * @n: how many bytes to
+//  * Return: dest
+//  */
 
-char *_strncat(char *dest, char *src, int n)
-{
-	int i, j;
+// char *_strncat(char *dest, char *src, int n)
+// {
+// 	int i, j;
 
-	for (i = 0; dest[i] != '\0'; i++)
-	{
-	}
-	j = 0;
-	while (j < n && src[j] != '\0')
-	{
-		dest[i] = src[j];
-		i++;
-		j++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+// 	for (i = 0; dest[i] != '\0'; i++)
+// 	{
+// 	}
+// 	j = 0;
+// 	while (j < n && src[j] != '\0')
+// 	{
+// 		dest[i] = src[j];
+// 		i++;
+// 		j++;
+// 	}
+// 	dest[i] = '\0';
+// 	return (dest);
+// }
 
 /**
  * _strstr - finds the first occurence of the substring needle
