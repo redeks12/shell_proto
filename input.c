@@ -1,18 +1,18 @@
 #include "shell.h"
 /**
- * _getline - Read input and put in buffer
- * @b: buffer 
+ * _getline - Read input and put in buff_t
+ * @b: buff_t 
  * @fd: file 
  * @envp: enviornment 
  * Return: Always 0. Exit on failure or EOF
  */
-int get_line(buffer *b, int fd, env_t *envp)
+int get_line(buff_t *b, int fd, env_t *envp)
 {
 	int rack, n;
 
 	rack = 0, n = 0;
-	while ((n = read(fd, b->buf + rack, b->size - rack)) > 0 &&
-			b->buf[b->bp + rack + n - 1] != '\n')
+	while ((n = read(fd, b->b_s + rack, b->sz - rack)) > 0 &&
+			b->b_s[b->bl_s + rack + n - 1] != '\n')
 	{
 		_realloc(b);
 		rack = rack + n;
@@ -25,45 +25,46 @@ int get_line(buffer *b, int fd, env_t *envp)
 		_setfree(FREE_ADDRESSES);
 		_exit(0);
 	}
-	b->buf[n + rack] = '\0';
+	b->b_s[n + rack] = '\0';
 	return (0);
 }
 /**
- * read_file - reads contents of files to buffer
- * @b: buffer
+ * read_file - reads contents of files to buff_t
+ * @b: buff_t
  * @envp: second param
  *
  * Return: 1 on file not exist, else 0
  */
-int read_file(buffer *b, env_t *envp)
+int read_file(buff_t *b, env_t *envp)
 {
 	int fd, i;
 	char *file, *fullfile;
+	
 
-	/* scan through buffer and pull out file to read */
-	i = b->bp;
-        for ( ; is_w(b->buf[i]); i++);
-	// while (is_w(b->buf[i]))
+	/* scan through buff_t and pull out file to read */
+	i = b->bl_s;
+        for ( ; is_w(b->b_s[i]); i++);
+	// while (is_w(b->b_s[i]))
 	// 	i++;
-	if (!matchStrings(b->buf + i, "simple_shell") || b->buf[i] == '\0')
+	if (!matchStrings(b->b_s + i, "simple_shell") || b->b_s[i] == '\0')
 		return (0);
-        for ( ;(!is_w(b->buf[i]) && b->buf[i] != '\0'); i++);
-	// while (!is_w(b->buf[i]) && b->buf[i] != '\0')
+        for ( ;(!is_w(b->b_s[i]) && b->b_s[i] != '\0'); i++);
+	// while (!is_w(b->b_s[i]) && b->b_s[i] != '\0')
 	// 	i++;
-        for ( ;is_w(b->buf[i]) && b->buf[i] != '\0'; i++);
-	// while (is_w(b->buf[i]) && b->buf[i] != '\0')
+        for ( ;is_w(b->b_s[i]) && b->b_s[i] != '\0'; i++);
+	// while (is_w(b->b_s[i]) && b->b_s[i] != '\0')
 	// 	i++;
-        if (b->buf[i])
+        if (b->b_s[i])
                 fd = -1;
-	// if (b->buf[i] == '\0')
+	// if (b->b_s[i] == '\0')
 	// 	fd = -1;
 	else
 	{
-		file = b->buf + i;
-                for ( ;(!is_w(b->buf[i]) && b->buf[i] != '\0'); i++);
-		// while (!is_w(b->buf[i]) && b->buf[i] != '\0')
+		file = b->b_s + i;
+                for ( ;(!is_w(b->b_s[i]) && b->b_s[i] != '\0'); i++);
+		// while (!is_w(b->b_s[i]) && b->b_s[i] != '\0')
 		// 	i++;
-		b->buf[i] = '\0';
+		b->b_s[i] = '\0';
 		new_pth(&fullfile, file, "PWD", envp);
 		fd = open(fullfile, O_RDONLY);
 	}

@@ -51,12 +51,10 @@ char *func_cd(char **new_dir, env_t *environ, int size)
 	return (pt);
 }
 /**
- * cd_shell - builtin command cd_shell, mimics cd
- * @arr: argumenet list given by user, generally gives which directory
- * to change to
- * @environ: environemental variable linked list to get current working direcoty
- * and also to update the variables PWD and OLDPWD
- * @size: size to create our buffer for pth
+ * cd_shell - builtin command
+ * @arr: arr
+ * @environ: environement
+ * @size: size
  * Return: 0 on success and 1 on failure
  */
 int cd_shell(char **arr, env_t *environ, int size)

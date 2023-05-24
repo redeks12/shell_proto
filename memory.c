@@ -1,16 +1,16 @@
 #include "shell.h"
 /**
- * _realloc - allocated to buffer
+ * _realloc - allocated to buff_t
  * @str: pointer 
  */
-void _realloc(buffer *str)
+void _realloc(buff_t *str)
 {
 	char *temp;
 
-	temp = str->buf;
-	str->size *= 2;
-	str->buf = _malloc(sizeof(char) * str->size);
-	_memcpy(str->buf, temp, str->size / 2);
+	temp = str->b_s;
+	str->sz *= 2;
+	str->b_s = _malloc(sizeof(char) * str->sz);
+	_memcpy(str->b_s, temp, str->sz / 2);
 	_free(temp);
 }
 /**

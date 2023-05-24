@@ -1,35 +1,35 @@
 #include "shell.h"
 /**
  * aliase - wrapper function for checking and replacing aliases
- * @b: buffer structure
+ * @b: buff_t structure
  * @env_p: enviornment struct to pass along
  * Return: 1 on alias replacement, 0 if no replacement
  */
-int aliase(buffer *b, env_t *env_p)
+int aliase(buff_t *b, env_t *env_p)
 {
 	static int stop = 2;
 	int i, size;
 	char *str, *strcpy;
 
 	size = 0, i = 0;
-	while (b->buf[b->bp] == ' ' || b->buf[b->bp] == '\t')
-		b->bp++;
-	while (!is_w(b->buf[b->bp + size]))
+	while (b->b_s[b->bl_s] == ' ' || b->b_s[b->bl_s] == '\t')
+		b->bl_s++;
+	while (!is_w(b->b_s[b->bl_s + size]))
 		size++;
 
 	str = _malloc(sizeof(char) * (size + 1));
 	strcpy = str;
 
 	while (i < size)
-		str[i] = b->buf[b->bp + i], i++;
+		str[i] = b->b_s[b->bl_s + i], i++;
 	str[i] = '\0';
 
 	_a_shell(&str, env_p, 0);
 
 	if (str)
 	{
-		rem_str(b, b->bp);
-		add_str(b, str, b->bp);
+		rem_str(b, b->bl_s);
+		add_str(b, str, b->bl_s);
 		_free(strcpy);
 		if (stop++ == 10)
 		{

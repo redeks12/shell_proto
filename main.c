@@ -5,54 +5,54 @@
  * @rt: Return
  * Return: 1 if we have more commands to execute, 0 if we don't
  */
-int c_extra(buffer *space, int rt)
+int c_extra(buff_t *space, int rt)
 {
-	if (space->bp == 0)
+	if (space->bl_s == 0)
 		return (0);
 
-	while (space->buf[space->bp] != '\0')
+	while (space->b_s[space->bl_s] != '\0')
 	{
-		if (space->buf[space->bp] == ';')
+		if (space->b_s[space->bl_s] == ';')
 		{
 			c_short(space);
 			return (1);
 		}
-		if (space->buf[space->bp] == '&' && rt == 0)
+		if (space->b_s[space->bl_s] == '&' && rt == 0)
 		{
 			c_short(space);
 			return (1);
 		}
-		if (space->buf[space->bp] == '|' && rt != 0)
+		if (space->b_s[space->bl_s] == '|' && rt != 0)
 		{
 			c_short(space);
 			return (1);
 		}
-		space->bp++;
+		space->bl_s++;
 	}
-	space->bp = 0;
+	space->bl_s = 0;
 	return (0);
 }
 /**
  * c_short - short
  * @space: space
  */
-void c_short(buffer *space)
+void c_short(buff_t *space)
 {
 	int chk;
 
 	chk = 0;
-	while (space->buf[space->bp] == ';')
-		space->bp++, chk = 1;
+	while (space->b_s[space->bl_s] == ';')
+		space->bl_s++, chk = 1;
 	if (chk)
 		return;
 
-	while (space->buf[space->bp] == '|')
-		space->bp++, chk = 1;
+	while (space->b_s[space->bl_s] == '|')
+		space->bl_s++, chk = 1;
 	if (chk)
 		return;
 
-	while (space->buf[space->bp] == '&')
-		space->bp++;
+	while (space->b_s[space->bl_s] == '&')
+		space->bl_s++;
 }
 /**
  * main - hsh
@@ -66,10 +66,10 @@ int main(int ac, char **av, char **environ)
 	char **array;
 	env_t *ev_n;
 	int rt;
-	buffer b = {NULL, BUFSIZE, 0};
+	buff_t b = {NULL, BUFSIZE, 0};
 	(void)ac, (void)av, (void)environ;
 
-	b.buf = _malloc(sizeof(char) * b.size);
+	b.b_s = _malloc(sizeof(char) * b.sz);
 	array = NULL;
 	rt = 0;
 
@@ -83,7 +83,7 @@ int main(int ac, char **av, char **environ)
 		{
 			_puts("$ ");
 			get_line(&b, STDIN_FILENO, ev_n);
-			_checker(b.buf, ev_n, 'a');
+			_checker(b.b_s, ev_n, 'a');
 		}
 		while (aliase(&b, ev_n))
 			;
@@ -92,10 +92,10 @@ int main(int ac, char **av, char **environ)
 		break_buffer(&b, &array);
 		if (array[0] == NULL)
 			continue;
-		rt = execute2(array, ev_n, b.size);
+		rt = execute2(array, ev_n, b.sz);
 		if (rt != 0 && rt != 2)
 		{
-			rt = exec_part(array, ev_n, b.size);
+			rt = exec_part(array, ev_n, b.sz);
 		}
 			
 	}

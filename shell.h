@@ -16,17 +16,17 @@
 #define FREE_ADDRESSES ((void *)3)
 #define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof((ARRAY)[0]))
 /**
- * struct buffer - structure for controlling buffer
- * @buf: pointer the buffer
- * @size: size of the buffer
- * @bp: current point in buffer to check for multiple command passes
+ * struct buff_t - structure for controlling buff_t
+ * @buf: pointer the buff_t
+ * @size: size of the buff_t
+ * @bp: current point in buff_t to check for multiple command passes
  */
-typedef struct buffer
+typedef struct buff_t
 {
-	char *buf;
-	unsigned int size;
-	unsigned int bp;
-} buffer;
+	char *b_s;
+	unsigned int sz;
+	unsigned int bl_s;
+} buff_t;
 /**
  * struct builtin - lookup structure for builtin functions
  * @name: string name user types to call function
@@ -88,21 +88,21 @@ void print_int(int num);
 void _puts(char *str);
 int _putchar(char c);
 
-int aliase(buffer *b, env_t *env_p);
+int aliase(buff_t *b, env_t *env_p);
 
-void _realloc(buffer *str);
+void _realloc(buff_t *str);
 void *_malloc(size_t ptr_size);
 
-void rem_str(buffer *str, int n);
-void add_str(buffer *b, char *str, int position);
+void rem_str(buff_t *str, int n);
+void add_str(buff_t *b, char *str, int position);
 void _setfree(void *addr);
 void _free(void *address);
 void add_node(addr_list *list, void *newnode);
 void free_list(addr_list *list);
 int rem_node(addr_list *list, void *addr);
 
-int read_file(buffer *b, env_t *envp);
-int get_line(buffer *b, int fd, env_t *envp);
+int read_file(buff_t *b, env_t *envp);
+int get_line(buff_t *b, int fd, env_t *envp);
 
 char *_memcpy(char *dest, char *src, unsigned int n);
 char *_memset(char *s, char b, unsigned int n);
@@ -192,13 +192,13 @@ void end_inp(char *cont);
 int input_finish(char c);
 int is_w(char c);
 
-void break_buffer(buffer *cont, char ***array);
+void break_buffer(buff_t *cont, char ***array);
 void size_x(char *cont, char ***arr);
 char *find_elem(char *array, int index);
 char *cur_pid(void);
-void _to_buff(buffer *base, env_t *environ, int rt);
-int c_extra(buffer *space, int rt);
-void c_short(buffer *space);
+void _to_buff(buff_t *base, env_t *environ, int rt);
+int c_extra(buff_t *space, int rt);
+void c_short(buff_t *space);
 
 
 
