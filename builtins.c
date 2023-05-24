@@ -49,7 +49,7 @@ int help_shell(char **arr)
 	else
 	{
 		wh_t = ARRAY_SIZE(conts);
-		// for (i = 0; i < wh_t; i++)
+
                 i = 0;
                 while (i < wh_t)
 		{
@@ -95,21 +95,6 @@ int hist_shell(char **arr, list_e *environ, int type)
         		show_hist(&old_cmd);
                         break;
         }
-	// if (type == 0)
-	// 	new_hist(&old_cmd, environ);
-	// else if (type == 1)
-	// 	add_to_list(&old_cmd, arr[0]);
-	// else if (type == 2)
-	// 	add_to_file(environ, &old_cmd);
-	// else
-	// {
-	// 	if (arr[1] != NULL)
-	// 	{
-	// 		_puts("Error: no such command\n");
-	// 		return (2);
-	// 	}
-	// 	show_hist(&old_cmd);
-	// }
 	return (EXIT_SUCCESS);
 }
 /**
@@ -138,7 +123,7 @@ int setenv_shell(char **arr, list_e *environ, int size)
 	_strncat(type, "=", 1);
 	new = environ;
 	fl = 0; 
-	// for (new = environ, fl = 0; new != NULL; new = new->next)
+
 	while(new != NULL)
 	{
 		if (matchStrings(new->hold, type) != 0)
@@ -179,8 +164,7 @@ int unsetenv_shell(char **arr, list_e *environ)
 	type = _malloc(sizeof(char) * (i + 2));
 	_memcpy(type, arr[1], i + 1);
 	_strncat(type, "=", 1);
-	/* go through loop to search for environemental variable*/
-	// for (new = environ, ct = 0; new != NULL; new = new->next)
+
 	new = environ;
 	ct = 0;
 	while (new != NULL)

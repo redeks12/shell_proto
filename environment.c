@@ -79,11 +79,7 @@ char *_rem_pth(char **arr, list_e *environ, char *pth, int size)
                         sym_num++;
                 i++;
         }
-	// for (i = 0, sym_num = 0; new_path[i] != '\0'; i++)
-	// {
-	// 	if (new_path[i] == '/')
-	// 		sym_num++;
-	// }
+
 	curdir = arr[1];
 	if (_strcmp(curdir, ".") == 0)
 		new_path = _del_nm(environ, "PWD=", size);
@@ -100,12 +96,6 @@ char *_rem_pth(char **arr, list_e *environ, char *pth, int size)
                         i++;;
                 }
                 
-		/* check for if things behind it + append*/
-		// for (identifyer = 0, i = 0; identifyer < sym_num - 1; i++)
-		// {
-		// 	if (new_path[i] == '/')
-		// 		identifyer++;
-		// }
 		new_path[i - 1] = '\0';
 	}
 	else if (_strcmp(curdir, "-") == 0)
@@ -159,8 +149,7 @@ int env_shell(char **arr, list_e *environ)
 		arr[count - 1] = arr[count];
                 count++;
         }
-	// for (count = 1; arr[count] != NULL; count++)
-	// 	arr[count - 1] = arr[count];
+
 	arr[count - 1] = arr[count];
 	return (EXIT_FAILURE);
 }
