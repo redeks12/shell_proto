@@ -44,10 +44,12 @@ int mk_pth(char *input, char **find)
 	{
 		_strncat(find[i], input, _strlen(input));
 		file = open(find[i], O_RDONLY);
-		// _puts("after join");
-		// _puts(find[i]), _puts("\n");
-		// print_int(file);
-		// _puts("\n");
+		_puts("paths.c");
+		_puts("\n");
+		_puts("after join");
+		_puts(find[i]), _puts("\n");
+		print_int(file);
+		_puts("\n");
 		if (file > 0)
 		{
 			close(file);

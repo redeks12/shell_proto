@@ -43,12 +43,15 @@ int main_execute(char *input, char **array, env_t *environ)
 	pid_t cur;
 	int st, i;
 	char **arr_s;
+	char *pp = "/bin/";
+	// _strcat(pp,)
 
 
 	cur = fork();
 	if (cur == 0)
 	{
 		arr_s = arr_init(environ);
+
 		i = execve(input, array, arr_s);
 		if (i < 0)
 		{
@@ -98,16 +101,18 @@ int exec_part(char **arr, env_t *environ, int input_s)
 		_puts(find[0]);
 		_puts("\n");
 		i = mk_pth(inp, find);
-		// _puts(inp);
-		// _puts("\n\n");
-		// _puts(find[0]);
-		// _puts("\n\n");
-		// print_int(i);
-		// _puts("\n\n");
+		_puts("execute.c");
+		_puts("\n");
+		_puts(inp);
+		_puts("\n\n");
+		_puts(find[0]);
+		_puts("\n\n");
+		print_int(i);
+		_puts("\n\n");
 		if (i == 0)
 		{
-			// print_int(i);
-			// _puts("\n\n");
+			print_int(i);
+			_puts("\n\n");
 			st = main_execute(inp, arr, environ);
 
 		}
