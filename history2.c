@@ -13,7 +13,9 @@ int add_to_file(list_e *environ, list_h *list)
 	int file, i;
 
 	i = 0;
-	
+	// list = list->next;
+	// for (a_new = list; a_new != NULL; a_new = a_new->next)
+	// 	i++;
         a_new = list->next;
         while (a_new != NULL)
         {
@@ -62,33 +64,33 @@ void _checker(char *input, list_e *environ, char type)
 {
 	char **str;
 
-	// str = _malloc(sizeof(char *) * 2);
-	// if (type == 'c')
-	// 	hist_shell(NULL, environ, 0);
-	// else if (type == 'a')
-	// {
-	// 	str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
-	// 	_memcpy(str[0], input, _strlen(input) + 1);
-	// 	hist_shell(str, environ, 1);
-	// }
-	// else if (type == 'w')
-	// 	hist_shell(str, environ, 2);
-        switch (type)
-        {
-                case 'c':
-                        hist_shell(NULL, environ, 0);
-                        break;
-                case 'a':
-                        str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
-        		_memcpy(str[0], input, _strlen(input) + 1);
-        		hist_shell(str, environ, 1);
-			break;
-                case 'w':
-                        hist_shell(str, environ, 2);
-			break;
-                default:
-                        break;
-        }
+	str = _malloc(sizeof(char *) * 2);
+	if (type == 'c')
+		hist_shell(NULL, environ, 0);
+	else if (type == 'a')
+	{
+		str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
+		_memcpy(str[0], input, _strlen(input) + 1);
+		hist_shell(str, environ, 1);
+	}
+	else if (type == 'w')
+		hist_shell(str, environ, 2);
+        // switch (type)
+        // {
+        //         case 'c':
+        //                 hist_shell(NULL, environ, 0);
+        //                 break;
+        //         case 'a':
+        //                 str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
+        // 		_memcpy(str[0], input, _strlen(input) + 1);
+        // 		hist_shell(str, environ, 1);
+	// 		break;
+        //         case 'w':
+        //                 hist_shell(str, environ, 2);
+	// 		break;
+        //         default:
+        //                 break;
+        // }
 }
 
 /**
@@ -103,6 +105,7 @@ void show_hist_2(list_h *old_cmd)
 	list_h *new, *new_s;
 
 	old_cmd = old_cmd->next;
+	// for (ct = 0, new = old_cmd; new != NULL; new = new->next, ct++);
 	ct = 0;
 	new = old_cmd;
 	while (new != NULL)
