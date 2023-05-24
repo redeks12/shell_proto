@@ -43,7 +43,7 @@ char **break_pth(char **find, char *locate, int size)
 			_puts("if..");
 			_puts(space);
 			_puts("\n");
-			space = NULL;
+			space[0] = '\0';
 			l++;
 		}
 		else
