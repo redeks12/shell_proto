@@ -24,7 +24,8 @@ void rem_str(buff_t *str, int n)
  */
 void add_str(buff_t *b, char *str, int position)
 {
-	unsigned int i, length, j;
+	unsigned int  length;
+	int j, i;
 
 	rem_str(b, position);
 
