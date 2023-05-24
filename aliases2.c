@@ -1,18 +1,18 @@
 #include "shell.h"
 /**
- * _a_shell - builtin for alias function
+ * _a_shell - builtin for list_al function
  * @arr: argument vector
  * @environ: env new
  * @type: Execution type for the program, 0 or !0
- * Description: Complicated parent function for the alias functionality
+ * Description: Complicated parent function for the list_al functionality
  *				of hsh. Uses two modes to allow it being called from
  *				multiple points from within our program.
  * Return: 0 on success, 2 on failure.
  */
-int _a_shell(char **arr, env_t *environ, int type)
+int _a_shell(char **arr, list_e *environ, int type)
 {
 	int result;
-	static alias new = {NULL, NULL, NULL};
+	static list_al new = {NULL, NULL, NULL};
 
 	(void) environ;
 	if (type == 0)

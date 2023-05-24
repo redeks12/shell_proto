@@ -6,7 +6,7 @@
  * @envp: enviornment 
  * Return: Always 0. Exit on failure or EOF
  */
-int get_line(buff_t *b, int fd, env_t *envp)
+int get_line(buff_t *b, int fd, list_e *envp)
 {
 	int rack, n;
 
@@ -35,7 +35,7 @@ int get_line(buff_t *b, int fd, env_t *envp)
  *
  * Return: 1 on file not exist, else 0
  */
-int read_file(buff_t *b, env_t *envp)
+int read_file(buff_t *b, list_e *envp)
 {
 	int fd, i;
 	char *file, *fullfile;

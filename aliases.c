@@ -3,9 +3,9 @@
  * aliase - wrapper function for checking and replacing aliases
  * @b: buff_t structure
  * @env_p: enviornment struct to pass along
- * Return: 1 on alias replacement, 0 if no replacement
+ * Return: 1 on list_al replacement, 0 if no replacement
  */
-int aliase(buff_t *b, env_t *env_p)
+int aliase(buff_t *b, list_e *env_p)
 {
 	static int stop = 2;
 	int i, size;
@@ -44,15 +44,15 @@ int aliase(buff_t *b, env_t *env_p)
 	return (0);
 }
 /**
- * a_operations - operates and configure for the alias
- * @list: alias
+ * a_operations - operates and configure for the list_al
+ * @list: list_al
  * @arr: args
  *
  * Return: Always 0;
  */
-int a_operations(alias *list, char **arr)
+int a_operations(list_al *list, char **arr)
 {
-	alias *item;
+	list_al *item;
 	char *character, *val;
 	int i, j;
 
@@ -76,23 +76,23 @@ int a_operations(alias *list, char **arr)
 	}
 	character[j] = '\0';
 
-	while (list->next != NULL && !strictStringMatch(character, list->key))
+	while (list->next != NULL && !strictStringMatch(character, list->unq))
 		list = list->next;
-	if (list->key == NULL || strictStringMatch(character, list->key))
+	if (list->unq == NULL || strictStringMatch(character, list->unq))
 	{
-		list->key = character;
-		list->value = val;
+		list->unq = character;
+		list->hold_s = val;
 	}
 	else if (list->next == NULL)
 	{
-		item = _malloc(sizeof(alias));
+		item = _malloc(sizeof(list_al));
 		item->next = NULL;
-		item->value = val;
-		item->key = character;
+		item->hold_s = val;
+		item->unq = character;
 		list->next = item;
 	}
 	else
-		list->value = val;
+		list->hold_s = val;
 	return (0);
 }
 /**
@@ -100,9 +100,9 @@ int a_operations(alias *list, char **arr)
  * @list: linked list
  * @arr: args
  *
- * Return: 1 if no match needed, 2 on alias not found, 0 on success
+ * Return: 1 if no match needed, 2 on list_al not found, 0 on success
  */
-int a_print(alias *list, char **arr)
+int a_print(list_al *list, char **arr)
 {
 	char *string;
 
@@ -113,12 +113,12 @@ int a_print(alias *list, char **arr)
 	string = a_find(list, arr[1]);
 	if (string == NULL)
 	{
-		_puts("alias not found\n");
+		_puts("list_al not found\n");
 		return (2);
 	}
 	else
 	{
-		_puts("alias ");
+		_puts("list_al ");
 		_puts(arr[1]);
 		_puts("='");
 		_puts(string);
@@ -128,38 +128,38 @@ int a_print(alias *list, char **arr)
 }
 /**
  * a_complete - show all aliases
- * @prop: alias linked list
+ * @prop: list_al linked list
  *
  * Return: Always 0
  */
-int a_complete(alias *prop)
+int a_complete(list_al *prop)
 {
-	for ( ;prop != NULL && prop->key != NULL; prop = prop->next)
-	// while (prop != NULL && prop->key != NULL)
+	for ( ;prop != NULL && prop->unq != NULL; prop = prop->next)
+	// while (prop != NULL && prop->unq != NULL)
 	{
-		_puts("alias ");
-		_puts(prop->key);
+		_puts("list_al ");
+		_puts(prop->unq);
 		_puts("='");
-		_puts(prop->value);
+		_puts(prop->hold_s);
 		_puts("'\n");
 		// prop = prop->next;
 	}
 	return (EXIT_SUCCESS);
 }
 /**
- * a_find - find alias values matching their key
- * @prop: alias linked list
- * @arr: alias to search for
+ * a_find - find list_al values matching their unq
+ * @prop: list_al linked list
+ * @arr: list_al to search for
  *
- * Return: matching alias value, or NULL
+ * Return: matching list_al hold_s, or NULL
  */
-char *a_find(alias *prop, char *arr)
+char *a_find(list_al *prop, char *arr)
 {
-	for (; prop != NULL && prop->key != NULL; prop = prop->next)
-	// while (prop != NULL && prop->key != NULL)
+	for (; prop != NULL && prop->unq != NULL; prop = prop->next)
+	// while (prop != NULL && prop->unq != NULL)
 	{
-		if (strictStringMatch(arr, prop->key))
-			return (prop->value);
+		if (strictStringMatch(arr, prop->unq))
+			return (prop->hold_s);
 		// prop = prop->next;
 	}
 	return (NULL);

@@ -4,9 +4,9 @@
  * variables in the extern environ variable
  * Return: main of created list
  */
-env_t *mk_env(void)
+list_e *mk_env(void)
 {
-	env_t *main;
+	list_e *main;
 	int i = 0;
 
 	main = NULL;
@@ -22,13 +22,13 @@ env_t *mk_env(void)
  * cng_env - swith env
  * @environ: environment
  * @type: type
- * @new_char: value
+ * @new_char: hold
  * @size: size
  */
-void cng_env(env_t *environ, char *type, char *new_char, int size)
+void cng_env(list_e *environ, char *type, char *new_char, int size)
 {
 	char *nan;
-	env_t *new;
+	list_e *new;
 
 	nan = _malloc(sizeof(char) * size);
 	_memset(nan, '\0', size);
@@ -38,9 +38,9 @@ void cng_env(env_t *environ, char *type, char *new_char, int size)
         new = environ;
         while (new != NULL)
 	{
-		if (_strstr(new->value, type) != NULL && new->value[0] == type[0])
+		if (_strstr(new->hold, type) != NULL && new->hold[0] == type[0])
 		{
-			new->value = nan;
+			new->hold = nan;
 			break;
 		}
                 new = new->next;
@@ -51,15 +51,15 @@ void cng_env(env_t *environ, char *type, char *new_char, int size)
  * @main: main pointer to the linked list
  */
 
-void env_shw(env_t *main)
+void env_shw(list_e *main)
 {
-	env_t *new;
+	list_e *new;
 
 	// new = main;
 	// while (new != NULL)
         for (new = main; new != NULL; new = new->next)
 	{
-		_puts(new->value);
+		_puts(new->hold);
 		_puts("\n");
 		// new = new->next;
 	}
@@ -70,10 +70,10 @@ void env_shw(env_t *main)
  * @num: the nth node to delete
  */
 
-void env_del(env_t **main, int num)
+void env_del(list_e **main, int num)
 {
-	env_t *new;
-	env_t *new_s;
+	list_e *new;
+	list_e *new_s;
 	int i;
 	/*DEBUG: Shouldn't this just remove env by name, why by num?*/
 	i = 0;
@@ -81,7 +81,7 @@ void env_del(env_t **main, int num)
 	if (num == 0)
 	{
 		*main = (*main)->next;
-		_free(new->value);
+		_free(new->hold);
 		_free(new);
 	}
 	else
@@ -104,13 +104,13 @@ void env_del(env_t **main, int num)
  * Return: the address of the new element, on fail, program exits
  */
 
-env_t *env_join(env_t **main, char *characters)
+list_e *env_join(list_e **main, char *characters)
 {
-	env_t *new;
-	env_t *new_s;
+	list_e *new;
+	list_e *new_s;
 
-	new = _malloc(sizeof(env_t));
-	new->value = duplicate(characters);
+	new = _malloc(sizeof(list_e));
+	new->hold = duplicate(characters);
 	new->next = NULL;
 	if (*main == NULL)
 		*main = new;

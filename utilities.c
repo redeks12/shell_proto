@@ -5,10 +5,10 @@
  * Return: a 2D arr containing strings contained in linked list
  */
 
-char **arr_init(env_t *environ)
+char **arr_init(list_e *environ)
 {
 	char **arr;
-	env_t *new;
+	list_e *new;
 	int ct, i, j;
 
         // ct = 0;
@@ -23,19 +23,19 @@ char **arr_init(env_t *environ)
         i = 0;
         while (new != NULL)
         {
-              	j = _strlen(new->value);
+              	j = _strlen(new->hold);
 		arr[i] = _malloc(sizeof(char) * (j + 1));
 		_memset(arr[i], '\0', (j + 1));
-		_memcpy(arr[i], new->value, j);
+		_memcpy(arr[i], new->hold, j);
                 i++;
 		new = new->next;
         }
 	// for (new = environ, i = 0; new != NULL; new = new->next, i++)
 	// {
-	// 	j = _strlen(new->value);
+	// 	j = _strlen(new->hold);
 	// 	arr[i] = _malloc(sizeof(char) * (j + 1));
 	// 	_memset(arr[i], '\0', (j + 1));
-	// 	_memcpy(arr[i], new->value, j);
+	// 	_memcpy(arr[i], new->hold, j);
 	// }
 	arr[i] = NULL;
 	return (arr);

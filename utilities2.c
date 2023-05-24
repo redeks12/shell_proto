@@ -112,7 +112,7 @@ char *cur_pid(void)
  * @environ: Environment
  * @rt: return value of previous command
  */
-void _to_buff(buff_t *base, env_t *environ, int rt)
+void _to_buff(buff_t *base, list_e *environ, int rt)
 {	
 	char *pause;
 	int i, j;

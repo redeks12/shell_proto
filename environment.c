@@ -6,19 +6,19 @@
  * @size: size
  * Return: a string containing the path
  */
-char *_del_nm(env_t *environ, char *tb_rm, int size)
+char *_del_nm(list_e *environ, char *tb_rm, int size)
 {
 	char *cur_dir;
-	env_t *new;
+	list_e *new;
 
 	cur_dir = _malloc(sizeof(char) * size);
 	_memset(cur_dir, '\0', size);
 	new = environ;
 	for (; ; new = new->next)
 	{
-		if (compareStrings(new->value, tb_rm))
+		if (compareStrings(new->hold, tb_rm))
 		{
-			_strcpy(cur_dir, new->value);
+			_strcpy(cur_dir, new->hold);
 			break;
 		}
 		else if (new->next == NULL)
@@ -33,20 +33,20 @@ char *_del_nm(env_t *environ, char *tb_rm, int size)
 	return (cur_dir);
 }
 /**
- * _ret_val - retrives a value from the environment list
+ * _ret_val - retrives a hold from the environment list
  * @environ: the env list
  * @key: key
  * Return: a pointer
  */
-char *_ret_val(env_t *environ, char *key)
+char *_ret_val(list_e *environ, char *key)
 {
 	char *new_val;
 
 	while (1)
 	{
-		if (compareStrings(environ->value, key))
+		if (compareStrings(environ->hold, key))
 		{
-			new_val = environ->value;
+			new_val = environ->hold;
 			break;
 		}
 		else if (environ->next == NULL)
@@ -63,7 +63,7 @@ char *_ret_val(env_t *environ, char *key)
  * @pth: pth
  * @size: size
  */
-char *_rem_pth(char **arr, env_t *environ, char *pth, int size)
+char *_rem_pth(char **arr, list_e *environ, char *pth, int size)
 {
 	int i, sym_num, identifyer;
 	char *curdir, *new_path;
@@ -120,9 +120,9 @@ char *_rem_pth(char **arr, env_t *environ, char *pth, int size)
  * @environment: environement
  * Return: the pth str
  */
-char *new_pth(char **pth, char *file, char *character, env_t *environ)
+char *new_pth(char **pth, char *file, char *character, list_e *environ)
 {
-	char *value;
+	char *hold;
 
 	if (_strstr(character, "/"))
 	{
@@ -130,9 +130,9 @@ char *new_pth(char **pth, char *file, char *character, env_t *environ)
 		return (file);
 	}
 
-	value = _ret_val(environ, character);
-	*pth = _malloc(sizeof(char) * (_strlen(value) + _strlen(file) + 2));
-	_memcpy(*pth, value, _strlen(value) + 1);
+	hold = _ret_val(environ, character);
+	*pth = _malloc(sizeof(char) * (_strlen(hold) + _strlen(file) + 2));
+	_memcpy(*pth, hold, _strlen(hold) + 1);
 	strcat(*pth, "/");
 	strcat(*pth, file);
 	return (*pth);
@@ -143,7 +143,7 @@ char *new_pth(char **pth, char *file, char *character, env_t *environ)
  * @environ: environment
  * Return: 0 if success.
  */
-int env_shell(char **arr, env_t *environ)
+int env_shell(char **arr, list_e *environ)
 {
 	int count;
 

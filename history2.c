@@ -6,9 +6,9 @@
  * Return: 0 if success and 1 if failed to find pth for file
  */
 
-int add_to_file(env_t *environ, hist_t *list)
+int add_to_file(list_e *environ, list_h *list)
 {
-	hist_t *new, *a_new;
+	list_h *new, *a_new;
 	char *pth;
 	int file, i;
 
@@ -44,7 +44,7 @@ int add_to_file(env_t *environ, hist_t *list)
 	file = open(pth, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	for (new = list; new != NULL; new = new->next)
 	{
-		write(file, new->cmd, _strlen(new->cmd));
+		write(file, new->in_p, _strlen(new->in_p));
 		write(file, "\n", 1);
 	}
 	_free(list);
@@ -60,7 +60,7 @@ int add_to_file(env_t *environ, hist_t *list)
  * 'a' add old_cmd type, and 'w' write to file type
  */
 
-void _checker(char *input, env_t *environ, char type)
+void _checker(char *input, list_e *environ, char type)
 {
 	char **str;
 
@@ -98,11 +98,11 @@ void _checker(char *input, env_t *environ, char type)
  * @old_cmd: old_cmd linked list
  */
 
-void show_hist_2(hist_t *old_cmd)
+void show_hist_2(list_h *old_cmd)
 {
 	int i, ct;
 	char *string;
-	hist_t *new, *new_s;
+	list_h *new, *new_s;
 
 	old_cmd = old_cmd->next;
 	// for (ct = 0, new = old_cmd; new != NULL; new = new->next, ct++);
@@ -124,7 +124,7 @@ void show_hist_2(hist_t *old_cmd)
 		_puts(" ");
 		_puts(string);
 		_puts(" ");
-		_puts(new_s->cmd);
+		_puts(new_s->in_p);
 		_puts("\n");
 		new_s = new_s->next;
 		i++;

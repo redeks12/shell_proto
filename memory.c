@@ -24,36 +24,36 @@ void _free(void *address)
 }
 /**
  * _setfree - free on exit,
- * @addr: address 
+ * @addr: loc 
  */
 void _setfree(void *addr)
 {
-	static addr_list list = {NULL, NULL};
-	addr_list *tmp;
+	static list_a list = {NULL, NULL};
+	list_a *tmp;
 
 	tmp = &list;
 	if (addr != FREE_ADDRESSES && rem_node(tmp, addr))
 	{
 		while (1)
 		{
-			if (tmp->address == NULL)
+			if (tmp->loc == NULL)
 			{
-				tmp->address = addr;
+				tmp->loc = addr;
 				return;
 			}
-			else if (tmp->next == NULL)
+			else if (tmp->nxt == NULL)
 			{
 				add_node(tmp, addr);
 				return;
 			}
-			tmp = tmp->next;
+			tmp = tmp->nxt;
 		}
 	}
 	else if (addr == FREE_ADDRESSES)
 	{
-		free_list(list.next);
-		if (list.address != NULL)
-			free(list.address);
+		free_list(list.nxt);
+		if (list.loc != NULL)
+			free(list.loc);
 	}
 }
 /**

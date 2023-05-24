@@ -6,7 +6,7 @@
  * @size: the size of path
  * Return: 0 on success;
  */
-int exit_shell(char **arr, env_t *environ, int size)
+int exit_shell(char **arr, list_e *environ, int size)
 {
 	int var_e;
 	(void) size;
@@ -37,7 +37,7 @@ int help_shell(char **arr)
 	{"exit", help_exit},     {"env", help_env},
 	{"setenv", help_setenv}, {"unsetenv", help_unsetenv},
 	{"cd", help_cd},         {"history", help_hist},
-	{"help", help_help},     {"alias", help_alias}
+	{"help", help_help},     {"alias", help_}
 	};
 
 	if (arr[1] == NULL)
@@ -71,9 +71,9 @@ int help_shell(char **arr)
  * @type: type
  * Return: Always 0
  */
-int hist_shell(char **arr, env_t *environ, int type)
+int hist_shell(char **arr, list_e *environ, int type)
 {
-	static hist_t old_cmd = {NULL, NULL};
+	static list_h old_cmd = {NULL, NULL};
 
         switch (type)
         {
@@ -119,10 +119,10 @@ int hist_shell(char **arr, env_t *environ, int type)
  * @size: size
  * Return: 0 on success and 1 on error
  */
-int setenv_shell(char **arr, env_t *environ, int size)
+int setenv_shell(char **arr, list_e *environ, int size)
 {
 	char *type;
-	env_t *new;
+	list_e *new;
 	int fl, i, j;
 	(void) size;
 
@@ -141,10 +141,10 @@ int setenv_shell(char **arr, env_t *environ, int size)
 	// for (new = environ, fl = 0; new != NULL; new = new->next)
 	while(new != NULL)
 	{
-		if (matchStrings(new->value, type) != 0)
+		if (matchStrings(new->hold, type) != 0)
 		{
 			_strcat(type, arr[2]);
-			new->value = type;
+			new->hold = type;
 			fl = 1;
 		}
 		new = new->next;
@@ -164,10 +164,10 @@ int setenv_shell(char **arr, env_t *environ, int size)
  * Description: This will delete the node that contains the variable given, if
  * node does not exist then function will succeed
  */
-int unsetenv_shell(char **arr, env_t *environ)
+int unsetenv_shell(char **arr, list_e *environ)
 {
 	char *type;
-	env_t *new;
+	list_e *new;
 	int ct, i;
 
 	if (arr[1] == NULL)
@@ -185,7 +185,7 @@ int unsetenv_shell(char **arr, env_t *environ)
 	ct = 0;
 	while (new != NULL)
 	{
-		if (_strstr(new->value, type) != NULL)
+		if (_strstr(new->hold, type) != NULL)
 		{
 			env_del(&environ, ct);
 			return (0);

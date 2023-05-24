@@ -6,7 +6,7 @@
  * Return: 1 if success and 0 if failed
  */
 
-int get_content(env_t *environ, char **vari)
+int get_content(list_e *environ, char **vari)
 {
 	static int size = BUFSIZE;
 	char *pth, *buff;
@@ -48,7 +48,7 @@ int get_content(env_t *environ, char **vari)
  * Return: a pointer to the history linked list
  */
 
-void new_hist(hist_t *new, env_t *envp)
+void new_hist(list_h *new, list_e *envp)
 {
 	char *string, *space;
 	int i, j, n;
@@ -90,13 +90,13 @@ void new_hist(hist_t *new, env_t *envp)
  * Return: a pointer to the new node
  */
 
-hist_t *new_entry(hist_t *first, char *input)
+list_h *new_entry(list_h *first, char *input)
 {
-	hist_t *main_n;
-	hist_t *new;
+	list_h *main_n;
+	list_h *new;
 
-	main_n = _malloc(sizeof(hist_t));
-	main_n->cmd = duplicate(input);
+	main_n = _malloc(sizeof(list_h));
+	main_n->in_p = duplicate(input);
 	main_n->next = NULL;
 	if (first == NULL)
 		first = main_n;
@@ -114,14 +114,14 @@ hist_t *new_entry(hist_t *first, char *input)
  * @main: main
  */
 
-void show_hist(hist_t *main)
+void show_hist(list_h *main)
 {
 	char *hist;
 
         for (; main != NULL; main = main->next)
 	// while (main != NULL)
 	{
-		hist = duplicate(main->cmd);
+		hist = duplicate(main->in_p);
 		_puts(hist);
 		_puts("\n");
 		// main = main->next;
@@ -134,12 +134,12 @@ void show_hist(hist_t *main)
  * Description: add to end of list
  */
 
-void add_to_list(hist_t *list, char *input)
+void add_to_list(list_h *list, char *input)
 {
 	int i, len;
 	static int idx = 1;
 	char *command;
-	hist_t *new;
+	list_h *new;
 
 	command = _malloc(sizeof(char) * _strlen(input) + 1);
 	new = list;

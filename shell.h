@@ -17,9 +17,9 @@
 #define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof((ARRAY)[0]))
 /**
  * struct buff_t - structure for controlling buff_t
- * @buf: pointer the buff_t
- * @size: size of the buff_t
- * @bp: current point in buff_t to check for multiple command passes
+ * @b_s: pointer the buff_t
+ * @sz: size of the buff_t
+ * @bl_s: current point in buff_t to check for multiple command passes
  */
 typedef struct buff_t
 {
@@ -38,57 +38,57 @@ typedef struct builtin
 	int (*func)();
 } builtin;
 /**
- * struct addr_list - List for saving addresses for freeing on exit
- * @address: an address of any type
- * @next: the next node in the list
+ * struct list_a - List for saving addresses for freeing on exit
+ * @loc: an loc of any type
+ * @nxt: the nxt node in the list
  */
-typedef struct addr_list
+typedef struct list_a
 {
-	void *address;
-	struct addr_list *next;
-} addr_list;
+	void *loc;
+	struct list_a *nxt;
+} list_a;
 
 /**
- * struct hist_s - history linked list for saving commands
+ * struct list_h - history linked list for saving commands
  * @cmd: command given as input
  * @next: pointer to next node on list
  */
 
-typedef struct hist_s
+typedef struct list_h
 {
-	char *cmd;
-	struct hist_s *next;
-} hist_t;
+	char *in_p;
+	struct list_h *next;
+} list_h;
 
 extern char **environ;
 /**
- * struct env_s - structure for each environmental variable
+ * struct list_e - structure for each environmental variable
  * @value: value of the environmental variable
  * @next: next environmental variable
  */
 
-typedef struct env_s
+typedef struct list_e
 {
-	char *value;
-	struct env_s *next;
-} env_t;
+	char *hold;
+	struct list_e *next;
+} list_e;
 /**
- * struct alias - structure for holding aliases
+ * struct list_al - structure for holding aliases
  * @key: key to search for when matching
  * @value: value to replace matched keys
  * @next: next node in the list
  */
-typedef struct alias
+typedef struct list_al
 {
-	char *key;
-	char *value;
-	struct alias *next;
-} alias;
+	char *unq;
+	char *hold_s;
+	struct list_al *next;
+} list_al;
 void print_int(int num);
 void _puts(char *str);
 int _putchar(char c);
 
-int aliase(buff_t *b, env_t *env_p);
+int aliase(buff_t *b, list_e *env_p);
 
 void _realloc(buff_t *str);
 void *_malloc(size_t ptr_size);
@@ -97,12 +97,12 @@ void rem_str(buff_t *str, int n);
 void add_str(buff_t *b, char *str, int position);
 void _setfree(void *addr);
 void _free(void *address);
-void add_node(addr_list *list, void *newnode);
-void free_list(addr_list *list);
-int rem_node(addr_list *list, void *addr);
+void add_node(list_a *list, void *newnode);
+void free_list(list_a *list);
+int rem_node(list_a *list, void *addr);
 
-int read_file(buff_t *b, env_t *envp);
-int get_line(buff_t *b, int fd, env_t *envp);
+int read_file(buff_t *b, list_e *envp);
+int get_line(buff_t *b, int fd, list_e *envp);
 
 char *_memcpy(char *dest, char *src, unsigned int n);
 char *_memset(char *s, char b, unsigned int n);
@@ -130,21 +130,21 @@ int compareStrings(char *string1, char *string2);
 
 void print_error(char *err);
 
-char *_del_nm(env_t *environ, char *tb_rm, int size);
-char *_rem_pth(char **arr, env_t *environ, char *pth, int size);
-char *_ret_val(env_t *environ, char *key);
-char *new_pth(char **pth, char *file, char *character, env_t *environ);
-int get_content(env_t *environ, char **vari);
+char *_del_nm(list_e *environ, char *tb_rm, int size);
+char *_rem_pth(char **arr, list_e *environ, char *pth, int size);
+char *_ret_val(list_e *environ, char *key);
+char *new_pth(char **pth, char *file, char *character, list_e *environ);
+int get_content(list_e *environ, char **vari);
 
-char **arr_init(env_t *environ);
+char **arr_init(list_e *environ);
 
-void show_hist(hist_t *main);
-hist_t *new_entry(hist_t *first, char *input);
-void new_hist(hist_t *new, env_t *envp);
-int get_content(env_t *environ, char **vari);
-void add_to_list(hist_t *list, char *input);
-int add_to_file(env_t *environ, hist_t *list);
-void _checker(char *input, env_t *environ, char type);
+void show_hist(list_h *main);
+list_h *new_entry(list_h *first, char *input);
+void new_hist(list_h *new, list_e *envp);
+int get_content(list_e *environ, char **vari);
+void add_to_list(list_h *list, char *input);
+int add_to_file(list_e *environ, list_h *list);
+void _checker(char *input, list_e *environ, char type);
 
 
 int help_alias(void);
@@ -155,37 +155,37 @@ int help_help(void);
 int help_hist(void);
 int help_setenv(void);
 int help_unsetenv(void);
-int a_print(alias *list, char **arr);
-int a_operations(alias *list, char **arr);
-int a_complete(alias *prop);
-char *a_find(alias *prop, char *arr);
+int a_print(list_al *list, char **arr);
+int a_operations(list_al *list, char **arr);
+int a_complete(list_al *prop);
+char *a_find(list_al *prop, char *arr);
 
-char *func_cd(char **new_dir, env_t *environ, int size);
-int cd_shell(char **arr, env_t *environ, int size);
-int env_shell(char **arr, env_t *environ);
+char *func_cd(char **new_dir, list_e *environ, int size);
+int cd_shell(char **arr, list_e *environ, int size);
+int env_shell(char **arr, list_e *environ);
 int help_shell(char **arr);
-int exit_shell(char **arr, env_t *environ, int size);
-int hist_shell(char **arr, env_t *environ, int type);
-int setenv_shell(char **arr, env_t *environ, int size);
-int unsetenv_shell(char **arr, env_t *environ);
-int _a_shell(char **arr, env_t *environ, int type);
+int exit_shell(char **arr, list_e *environ, int size);
+int hist_shell(char **arr, list_e *environ, int type);
+int setenv_shell(char **arr, list_e *environ, int size);
+int unsetenv_shell(char **arr, list_e *environ);
+int _a_shell(char **arr, list_e *environ, int type);
 
 
 // char* intToString(int num, int mode);
 char *_itoa(int num, int mode);
 
-env_t *mk_env(void);
-void cng_env(env_t *environ, char *type, char *new_char, int size);
-void env_del(env_t **main, int num);
-void env_shw(env_t *main);
-env_t *env_join(env_t **main, char *characters);
+list_e *mk_env(void);
+void cng_env(list_e *environ, char *type, char *new_char, int size);
+void env_del(list_e **main, int num);
+void env_shw(list_e *main);
+list_e *env_join(list_e **main, char *characters);
 
-int _pth(char *locate, env_t *environ);
+int _pth(char *locate, list_e *environ);
 int mk_pth(char *input, char **find);
 char **break_pth(char **find, char *locate, int size);
-int execute2(char **arr, env_t *environ, int size_s);
-int exec_part(char **arr, env_t *environ, int input_s);
-int main_execute(char *input, char **array, env_t *environ);
+int execute2(char **arr, list_e *environ, int size_s);
+int exec_part(char **arr, list_e *environ, int input_s);
+int main_execute(char *input, char **array, list_e *environ);
 void _sig(int s);
 
 void end_inp(char *cont);
@@ -196,7 +196,7 @@ void break_buffer(buff_t *cont, char ***array);
 void size_x(char *cont, char ***arr);
 char *find_elem(char *array, int index);
 char *cur_pid(void);
-void _to_buff(buff_t *base, env_t *environ, int rt);
+void _to_buff(buff_t *base, list_e *environ, int rt);
 int c_extra(buff_t *space, int rt);
 void c_short(buff_t *space);
 

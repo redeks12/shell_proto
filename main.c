@@ -64,7 +64,7 @@ void c_short(buff_t *space)
 int main(int ac, char **av, char **environ)
 {
 	char **array;
-	env_t *ev_n;
+	list_e *ev_n;
 	int rt;
 	buff_t b = {NULL, BUFSIZE, 0};
 	(void)ac, (void)av, (void)environ;

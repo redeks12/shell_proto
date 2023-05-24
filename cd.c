@@ -8,7 +8,7 @@
  * Return: returns pth
  */
 
-char *func_cd(char **new_dir, env_t *environ, int size)
+char *func_cd(char **new_dir, list_e *environ, int size)
 {
 	char *pt;
 	int i, j;
@@ -57,7 +57,7 @@ char *func_cd(char **new_dir, env_t *environ, int size)
  * @size: size
  * Return: 0 on success and 1 on failure
  */
-int cd_shell(char **arr, env_t *environ, int size)
+int cd_shell(char **arr, list_e *environ, int size)
 {
 	char *pth, *contain, *cur_dir;
 	int l;

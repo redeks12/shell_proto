@@ -6,7 +6,7 @@
  * @size_s: size
  * Return: 0 on found builtin, 1 on found nothing, 2 on builtin error
  */
-int execute2(char **arr, env_t *environ, int size_s)
+int execute2(char **arr, list_e *environ, int size_s)
 {
 	int i, sz, pow;
 	builtin table[] = {
@@ -38,7 +38,7 @@ int execute2(char **arr, env_t *environ, int size_s)
  * Return: 0 on success and 2 on failure
  */
 
-int main_execute(char *input, char **array, env_t *environ)
+int main_execute(char *input, char **array, list_e *environ)
 {
 	pid_t cur;
 	int st, i;
@@ -75,7 +75,7 @@ int main_execute(char *input, char **array, env_t *environ)
  * @input_s: size
  * Return: st if success or 127 if failure.
  */
-int exec_part(char **arr, env_t *environ, int input_s)
+int exec_part(char **arr, list_e *environ, int input_s)
 {
 	char *inp, *locate;
 	char **find;
