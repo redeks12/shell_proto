@@ -10,6 +10,7 @@ list_e *mk_env(void)
 	int i = 0;
 
 	main = NULL;
+	// for (i = 0; environ[i] != NULL; i++)
         while (environ[i] != NULL)
         {
 		env_join(&main, environ[i]);
@@ -33,6 +34,7 @@ void cng_env(list_e *environ, char *type, char *new_char, int size)
 	_memset(nan, '\0', size);
 	_strcat(nan, type);
 	_strcat(nan, new_char);
+	// for (new = environ; new != NULL; new = new->next)
         new = environ;
         while (new != NULL)
 	{
@@ -53,10 +55,13 @@ void env_shw(list_e *main)
 {
 	list_e *new;
 
+	// new = main;
+	// while (new != NULL)
         for (new = main; new != NULL; new = new->next)
 	{
 		_puts(new->hold);
 		_puts("\n");
+		// new = new->next;
 	}
 }
 /**
@@ -70,7 +75,7 @@ void env_del(list_e **main, int num)
 	list_e *new;
 	list_e *new_s;
 	int i;
-
+	/*DEBUG: Shouldn't this just remove env by name, why by num?*/
 	i = 0;
 	new = *main;
 	if (num == 0)
@@ -81,7 +86,11 @@ void env_del(list_e **main, int num)
 	}
 	else
 	{
-
+		// while (i < num - 1)
+		// {
+		// 	new = new->next;
+		// 	i++;
+		// }
                 for (i = 0; i < num - 1; i++, new = new->next);
 		new_s = new->next;
 		new->next = new_s->next;
@@ -108,6 +117,9 @@ list_e *env_join(list_e **main, char *characters)
 	else
 	{
                 for (new_s = *main; new_s->next != NULL; new_s = new_s->next);
+		// new_s = *main;
+		// while (new_s->next != NULL)
+		// 	new_s = new_s->next;
 		new_s->next = new;
 	}
 	return (new);
