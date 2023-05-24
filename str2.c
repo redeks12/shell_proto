@@ -92,9 +92,14 @@ char *duplicate(char *str)
 		return (NULL);
 	for (i = 0; str[i] != '\0'; i++);
 	i++;
+	// j = 0;
 	cpy = _malloc(i * sizeof(char));
         for (j = 0; j < i; j++)
 		cpy[j] = str[j];
+	// while (j < i)
+	// {
+	// 	j++;
+	// }
 	return (cpy);
 }
 /**

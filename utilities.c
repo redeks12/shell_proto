@@ -11,6 +11,10 @@ char **arr_init(list_e *environ)
 	list_e *new;
 	int ct, i, j;
 
+        // ct = 0;
+        // new = environ;
+        // while (new != NULL)
+        //         ct++, new = new->next;
 	for (new = environ, ct = 0; new != NULL; new = new->next)
 		ct++;
 	arr = malloc(sizeof(char *) * (ct + 1));
@@ -26,10 +30,59 @@ char **arr_init(list_e *environ)
                 i++;
 		new = new->next;
         }
+	// for (new = environ, i = 0; new != NULL; new = new->next, i++)
+	// {
+	// 	j = _strlen(new->hold);
+	// 	arr[i] = _malloc(sizeof(char) * (j + 1));
+	// 	_memset(arr[i], '\0', (j + 1));
+	// 	_memcpy(arr[i], new->hold, j);
+	// }
 	arr[i] = NULL;
 	return (arr);
 }
+// char* intToString(int num, int mode)
+// {
+//     char* numStr;
+//     int currentIndex, exp, i, tempExp;
 
+//     numStr = _malloc(sizeof(char) * BUFSIZE);
+//     _memset(numStr, '\0', BUFSIZE);
+//     exp = 1000000000;
+//     currentIndex = 0;
+
+//     if (num != 0)
+//     {
+//         while ((num / exp) == 0)
+//             exp /= 10;
+        
+//         tempExp = exp;
+
+//         while (tempExp < 1000 && mode == 2)
+//         {
+//             numStr[currentIndex++] = '0';
+//             tempExp *= 10;
+//         }
+
+//         while (exp >= 1)
+//         {
+//             numStr[currentIndex++] = (num / exp) + '0';
+//             num %= exp;
+//             exp /= 10;
+//         }
+//     }
+//     else
+//     {
+//         if (mode == 2)
+//         {
+//             for (i = 0; i < 4; i++)
+//                 numStr[i] = '0';
+//         }
+//         else
+//             numStr[0] = '0';
+//     }
+
+//     return numStr;
+// }
 /**
  * _itoa - interger to string converter
  * @num: number to convert
@@ -38,28 +91,28 @@ char **arr_init(list_e *environ)
  */
 char *_itoa(int num, int mode)
 {
-	char *string;
-	int in, p, i, new;
+	char *num_str;
+	int index, exp, i, temp_exp;
 
-	string = malloc(sizeof(char) * BUFSIZE);
-	memset(string, '\0', BUFSIZE);
-	p = 1000000000;
-	in = 0;
+	num_str = malloc(sizeof(char) * BUFSIZE);
+	memset(num_str, '\0', BUFSIZE);
+	exp = 1000000000;
+	index = 0;
 	if (num != 0)
 	{
-		while ((num / p) == 0)
-			p /= 10;
-		new = p;
-		while (new < 1000 && mode == 2)
+		while ((num / exp) == 0)
+			exp /= 10;
+		temp_exp = exp;
+		while (temp_exp < 1000 && mode == 2)
 		{
-			string[in++] = 0 + '0';
-			new *= 10;
+			num_str[index++] = 0 + '0';
+			temp_exp *= 10;
 		}
-		while (p >= 1)
+		while (exp >= 1)
 		{
-			string[in++] = (num / p) + '0';
-			num %= p;
-			p /= 10;
+			num_str[index++] = (num / exp) + '0';
+			num %= exp;
+			exp /= 10;
 		}
 	}
 	else
@@ -67,12 +120,12 @@ char *_itoa(int num, int mode)
 		if (mode == 2)
 		{
 			for (i = 0; i < 4; i++)
-				string[i] = 0 + '0';
+				num_str[i] = 0 + '0';
 		}
 		else
-			string[0] = 0 + '0';
+			num_str[0] = 0 + '0';
 	}
-	return (string);
+	return (num_str);
 }
 /**
  * is_w - chaecks for whitespace
@@ -106,13 +159,14 @@ void end_inp(char *cont)
 {
 	int i = 0;
 
+	// for (i = 0; cont[i] != '\0'; i++);
     while (cont[i] != '\0')
         i++;
 	i++;
-
+	// for ( ; i > 0; i--)
     while (i > 0)
     {
-	cont[i + 1] = cont[i];
+		cont[i + 1] = cont[i];
         i--;
     }
         

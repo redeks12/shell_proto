@@ -112,6 +112,7 @@ void show_hist_2(list_h *old_cmd)
 	}
 
 	old_cmd = old_cmd->next;
+	// for (i = 0, new_s = old_cmd; new_s != NULL; new_s = new_s->next, i++)
 	i = 0;
 	new_s = old_cmd;
 	while (new_s != NULL)

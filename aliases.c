@@ -62,11 +62,13 @@ int a_operations(list_al *list, char **arr)
 
 	val = duplicate(val);
 
+	// for (i = 0; arr[1][i] != '='; i++);
 	i = 0;
 	j = 0;
 	while (arr[1][i] != '=')
 		i++;
 	character = _malloc(sizeof(char) * (i + 1));
+	// for (j = 0; j < i; j++)
 	while (j < i)
 	{
 		character[j] = arr[1][j];
@@ -133,12 +135,14 @@ int a_print(list_al *list, char **arr)
 int a_complete(list_al *prop)
 {
 	for ( ;prop != NULL && prop->unq != NULL; prop = prop->next)
+	// while (prop != NULL && prop->unq != NULL)
 	{
 		_puts("list_al ");
 		_puts(prop->unq);
 		_puts("='");
 		_puts(prop->hold_s);
 		_puts("'\n");
+		// prop = prop->next;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -152,9 +156,11 @@ int a_complete(list_al *prop)
 char *a_find(list_al *prop, char *arr)
 {
 	for (; prop != NULL && prop->unq != NULL; prop = prop->next)
+	// while (prop != NULL && prop->unq != NULL)
 	{
 		if (strictStringMatch(arr, prop->unq))
 			return (prop->hold_s);
+		// prop = prop->next;
 	}
 	return (NULL);
 }
