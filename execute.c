@@ -43,8 +43,7 @@ int main_execute(char *input, char **array, env_t *environ)
 	pid_t cur;
 	int st, i;
 	char **arr_s;
-	char *pp = "/bin/";
-	// _strcat(pp,)
+
 
 
 	cur = fork();

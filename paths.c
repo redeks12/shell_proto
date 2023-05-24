@@ -35,7 +35,6 @@ int mk_pth(char *input, char **find)
 
         i = 0;
 	int bl = ARRAY_SIZE(find);
-	_puts("before join");
 	while (i < bl)
 		_puts(find[i]), _puts("\n"), i++;
 	i = 0;

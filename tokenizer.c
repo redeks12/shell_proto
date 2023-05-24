@@ -38,21 +38,11 @@ char **break_pth(char **find, char *locate, int size)
 			find[idx][0] = '\0';
 			_strncat(find[idx], space, _strlen(space));
 			idx++;
-			// _puts("tokenizer.c");
-			// _puts("\n");
-			// _puts("if..");
-			// _puts(space);
-			// _puts("\n");
 			space[0] = '\0';
 			l++;
 		}
 		else
 		{
-			// _puts("else\n");
-			// _puts(space);
-			// _puts("\n");
-			// _puts(new);
-			// _puts("\n");
 			_strncat(space, new, 1);
 		}
 			

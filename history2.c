@@ -65,32 +65,32 @@ void _checker(char *input, env_t *environ, char type)
 	char **str;
 
 	str = _malloc(sizeof(char *) * 2);
-	// if (type == 'c')
-	// 	hist_shell(NULL, environ, 0);
-	// else if (type == 'a')
-	// {
-	// 	str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
-	// 	_memcpy(str[0], input, _strlen(input) + 1);
-	// 	hist_shell(str, environ, 1);
-	// }
-	// else if (type == 'w')
-	// 	hist_shell(str, environ, 2);
-        switch (type)
-        {
-                case 'c':
-                        hist_shell(NULL, environ, 0);
-                        break;
-                case 'a':
-                        str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
-        		_memcpy(str[0], input, _strlen(input) + 1);
-        		hist_shell(str, environ, 1);
-			break;
-                case 'w':
-                        hist_shell(str, environ, 2);
-			break;
-                default:
-                        break;
-        }
+	if (type == 'c')
+		hist_shell(NULL, environ, 0);
+	else if (type == 'a')
+	{
+		str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
+		_memcpy(str[0], input, _strlen(input) + 1);
+		hist_shell(str, environ, 1);
+	}
+	else if (type == 'w')
+		hist_shell(str, environ, 2);
+        // switch (type)
+        // {
+        //         case 'c':
+        //                 hist_shell(NULL, environ, 0);
+        //                 break;
+        //         case 'a':
+        //                 str[0] = _malloc(sizeof(char) * (_strlen(input) + 1));
+        // 		_memcpy(str[0], input, _strlen(input) + 1);
+        // 		hist_shell(str, environ, 1);
+	// 		break;
+        //         case 'w':
+        //                 hist_shell(str, environ, 2);
+	// 		break;
+        //         default:
+        //                 break;
+        // }
 }
 
 /**
