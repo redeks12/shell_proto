@@ -6,20 +6,22 @@
  * Return: 0 if successly found PATH variable and 1 if PATH
  * not found
  */
-int _pth(char *path, env_t *list)
+int _pth(char *locate, env_t *environ)
 {
-	env_t *temp;
+	env_t *new;
 
-	temp = list;
-	for (; temp->next != NULL; temp = temp->next)
+	new = environ;
+	// for (; new->next != NULL; new = new->next)
+        while (new->next != NULL)
 	{
-		if (matchStrings(temp->value, "PATH=") != 0)
+		if (matchStrings(new->value, "PATH=") != 0)
 		{
-			_strcpy(path, temp->value);
-			return (0);
+			_strcpy(locate, new->value);
+			return (EXIT_SUCCESS);
 		}
+                new = new->next;
 	}
-	return (1);
+	return (EXIT_FAILURE);
 }
 /**
  * mk_pth - checks th input
@@ -27,20 +29,32 @@ int _pth(char *path, env_t *list)
  * @find: array
  * Return: 0 if found and -1 if not;
  */
-int mk_pth(char *cmd, char **search_path)
+int mk_pth(char *input, char **find)
 {
-	int i, fd;
+	int i, file;
 
-	for (i = 0; search_path[i] != NULL; i++)
+        i = 0;
+	int bl = ARRAY_SIZE(find);
+	_puts("before join");
+	while (i < bl)
+		_puts(find[i]), _puts("\n"), i++;
+	i = 0;
+	// for (i = 0; find[i] != NULL; i++)
+        while (find[i] != NULL)
 	{
-		_strncat(search_path[i], cmd, _strlen(cmd));
-		fd = open(search_path[i], O_RDONLY);
-		if (fd > 0)
+		_strncat(find[i], input, _strlen(input));
+		file = open(find[i], O_RDONLY);
+		// _puts("after join");
+		// _puts(find[i]), _puts("\n");
+		// print_int(file);
+		// _puts("\n");
+		if (file > 0)
 		{
-			close(fd);
-			_strcpy(cmd, search_path[i]);
+			close(file);
+			_strcpy(input, find[i]);
 			return (0);
 		}
+                i++;
 	}
 	write(0, "Error: command not found\n", 25);
 	return (-1);
