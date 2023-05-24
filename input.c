@@ -40,30 +40,21 @@ int read_file(buff_t *b, list_e *envp)
 	int fd, i;
 	char *file, *fullfile;
 	
-
-	/* scan through buff_t and pull out file to read */
 	i = b->bl_s;
         for ( ; is_w(b->b_s[i]); i++);
-	// while (is_w(b->b_s[i]))
-	// 	i++;
+
 	if (!matchStrings(b->b_s + i, "simple_shell") || b->b_s[i] == '\0')
 		return (0);
         for ( ;(!is_w(b->b_s[i]) && b->b_s[i] != '\0'); i++);
-	// while (!is_w(b->b_s[i]) && b->b_s[i] != '\0')
-	// 	i++;
+
         for ( ;is_w(b->b_s[i]) && b->b_s[i] != '\0'; i++);
-	// while (is_w(b->b_s[i]) && b->b_s[i] != '\0')
-	// 	i++;
+
         if (b->b_s[i])
                 fd = -1;
-	// if (b->b_s[i] == '\0')
-	// 	fd = -1;
 	else
 	{
 		file = b->b_s + i;
                 for ( ;(!is_w(b->b_s[i]) && b->b_s[i] != '\0'); i++);
-		// while (!is_w(b->b_s[i]) && b->b_s[i] != '\0')
-		// 	i++;
 		b->b_s[i] = '\0';
 		new_pth(&fullfile, file, "PWD", envp);
 		fd = open(fullfile, O_RDONLY);

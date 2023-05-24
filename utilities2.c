@@ -8,7 +8,6 @@ void size_x(char *cont, char ***arr)
 {
 	int j, i, ident, w_s;
 
-	// for (j = 0, ident = 1; !input_finish(*cont); cont++)
         j = 0;
         ident = 1;
         while (!input_finish(*cont))
@@ -23,7 +22,6 @@ void size_x(char *cont, char ***arr)
 
 	if (*arr != NULL)
 	{
-		// for (i = 0; (*arr)[i] != NULL; i++);
                 i = 0;
                 while ((*arr)[i] != NULL)
                         i++;
@@ -54,7 +52,6 @@ char *find_elem(char *array, int index)
 	ct = 0;
 	i = 0;
 	j = 0;
-	// for (i = 0, j = 0; array[i] != '\0' || ct <= index; i++)
 	while (array[i] != '\0' || ct <= index)
 	{
 		if (array[i] == ' ' && ct == index - 1)

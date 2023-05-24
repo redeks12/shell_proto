@@ -18,7 +18,6 @@ int execute2(char **arr, list_e *environ, int size_s)
 
 	sz = ARRAY_SIZE(table);
         i = 0;
-	// for (i = 0; i < sz; i++)
         while(i < sz)
 	{
 		if (strictStringMatch(arr[0], table[i].name))

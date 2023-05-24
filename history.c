@@ -64,8 +64,7 @@ void new_hist(list_h *new, list_e *envp)
 		{
 			new_entry(new, "");
 		}
-		/* create linked list and fill in with what is in file*/
-		// for (i = 0, j = 0; space[i] != '\0'; i++)
+		
                 i = 0;
                 j = 0;
                 while (space[i] != '\0')
@@ -119,12 +118,10 @@ void show_hist(list_h *main)
 	char *hist;
 
         for (; main != NULL; main = main->next)
-	// while (main != NULL)
 	{
 		hist = duplicate(main->in_p);
 		_puts(hist);
 		_puts("\n");
-		// main = main->next;
 	}
 }
 /**
@@ -145,7 +142,6 @@ void add_to_list(list_h *list, char *input)
 	new = list;
 	if (idx == 1)
         {        
-		// for (new = list; new != NULL; new = new->next)
                 new = list;
                 while (new != NULL)
                 {
@@ -154,7 +150,7 @@ void add_to_list(list_h *list, char *input)
                 }
         }
 	len = _strlen(input);
-	// for (i = 0; i < len - 1; i++)
+
         i = 0;
         while (i < len - 1)
 		command[i] = input[i], i++;
