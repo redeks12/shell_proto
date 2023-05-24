@@ -30,10 +30,10 @@ char **break_pth(char **search_path, char *path, int size)
 		{
 			_strncat(buffer, "/", 1);
 			search_path[s_index] = _malloc(sizeof(char) * size);
-			search_path[s_index][0] = NULL;
+			search_path[s_index][0] = '\0';
 			_strncat(search_path[s_index], buffer, _strlen(buffer));
 			s_index++;
-			buffer[0] = NULL;
+			buffer[0] = '\0';
 		}
 		else
 			_strncat(buffer, temp, 1);
