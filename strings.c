@@ -8,11 +8,6 @@
 void rem_str(buff_t *str, int n)
 {
 	int i = 0;
-
-        // for (i = 0; !(is_w(str->b_s[n + i]) || input_finish(str->b_s[n + i])); i++)
-        // {
-        //         str->b_s[n + i] = ' ';
-        // }
         
 	while (!(is_w(str->b_s[n + i]) || input_finish(str->b_s[n + i])))
 	{
@@ -34,13 +29,11 @@ void add_str(buff_t *b, char *str, int position)
 	rem_str(b, position);
 
 	i = 0;
-        // for (i = 0; is_w(b->b_s[position + i]) && (position + i) < b->sz; i++);
 	while (is_w(b->b_s[position + i]) && (position + i) < b->sz)
 		i++;
 	if (i >  _strlen(str))
 		; /* insert happens below */
 	else
-        // if (i <= _strlen(str))
 	{
 		length = b->bl_s;
 		length += _strlen(b->b_s + b->bl_s);
@@ -56,12 +49,9 @@ void add_str(buff_t *b, char *str, int position)
 		for ( ; j >= 0; j--)
 			b->b_s[j + position + _strlen(str) - i + 1] = b->b_s[j + position];
 	}
-	// i = 0;
+
         for (i = 0; str[i] != '\0'; i++)
         {
                 b->b_s[position + i] = str[i], i++;
         }
-        
-	// while (str[i] != '\0')
-	// 	b->b_s[position + i] = str[i], i++;
 }

@@ -52,7 +52,6 @@ char *find_elem(char *array, int index)
 	ct = 0;
 	i = 0;
 	j = 0;
-	// for (i = 0, j = 0; array[i] != '\0' || ct <= index; i++)
 	while (array[i] != '\0' || ct <= index)
 	{
 		if (array[i] == ' ' && ct == index - 1)

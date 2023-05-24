@@ -171,7 +171,6 @@ int unsetenv_shell(char **arr, list_e *environ);
 int _a_shell(char **arr, list_e *environ, int type);
 
 
-// char* intToString(int num, int mode);
 char *_itoa(int num, int mode);
 
 list_e *mk_env(void);

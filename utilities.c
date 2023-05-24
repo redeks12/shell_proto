@@ -11,10 +11,6 @@ char **arr_init(list_e *environ)
 	list_e *new;
 	int ct, i, j;
 
-        // ct = 0;
-        // new = environ;
-        // while (new != NULL)
-        //         ct++, new = new->next;
 	for (new = environ, ct = 0; new != NULL; new = new->next)
 		ct++;
 	arr = malloc(sizeof(char *) * (ct + 1));
@@ -30,59 +26,11 @@ char **arr_init(list_e *environ)
                 i++;
 		new = new->next;
         }
-	// for (new = environ, i = 0; new != NULL; new = new->next, i++)
-	// {
-	// 	j = _strlen(new->hold);
-	// 	arr[i] = _malloc(sizeof(char) * (j + 1));
-	// 	_memset(arr[i], '\0', (j + 1));
-	// 	_memcpy(arr[i], new->hold, j);
-	// }
+
 	arr[i] = NULL;
 	return (arr);
 }
-// char* intToString(int num, int mode)
-// {
-//     char* numStr;
-//     int currentIndex, exp, i, tempExp;
 
-//     numStr = _malloc(sizeof(char) * BUFSIZE);
-//     _memset(numStr, '\0', BUFSIZE);
-//     exp = 1000000000;
-//     currentIndex = 0;
-
-//     if (num != 0)
-//     {
-//         while ((num / exp) == 0)
-//             exp /= 10;
-        
-//         tempExp = exp;
-
-//         while (tempExp < 1000 && mode == 2)
-//         {
-//             numStr[currentIndex++] = '0';
-//             tempExp *= 10;
-//         }
-
-//         while (exp >= 1)
-//         {
-//             numStr[currentIndex++] = (num / exp) + '0';
-//             num %= exp;
-//             exp /= 10;
-//         }
-//     }
-//     else
-//     {
-//         if (mode == 2)
-//         {
-//             for (i = 0; i < 4; i++)
-//                 numStr[i] = '0';
-//         }
-//         else
-//             numStr[0] = '0';
-//     }
-
-//     return numStr;
-// }
 /**
  * _itoa - interger to string converter
  * @num: number to convert
@@ -159,14 +107,12 @@ void end_inp(char *cont)
 {
 	int i = 0;
 
-	// for (i = 0; cont[i] != '\0'; i++);
     while (cont[i] != '\0')
         i++;
 	i++;
-	// for ( ; i > 0; i--)
     while (i > 0)
     {
-		cont[i + 1] = cont[i];
+	cont[i + 1] = cont[i];
         i--;
     }
         

@@ -17,7 +17,7 @@ char **break_pth(char **find, char *locate, int size)
         i = 0;
         ct = 1;
 	int l =0;
-	// for (i = 0, ct = 1; locate[i] != '\0'; i++)
+
         while (locate[i] != '\0')
 	{
 		if (locate[i] == ':')
@@ -66,7 +66,6 @@ void break_buffer(buff_t *cont, char ***array)
 	size_x(cont->b_s + cont->bl_s, array);
 
 	/* Build the argument vector from the given buff_t */
-	// for (i = cont->bl_s, j = 0, ident = 1; !input_finish(cont->b_s[i]); i++)
 	i = cont->bl_s;
 	j = 0;
 	ident = 1;
