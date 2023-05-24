@@ -1,109 +1,103 @@
 #include "shell.h"
 /**
- * main - Holberton Shell
- * @argc: argument count
- * @argv: a list of all arguments
- * @envp: environmental variable list from the parent
+ * c_extra - checks if there are exta commands
+ * @space: space
+ * @rt: Return
+ * Return: 1 if we have more commands to execute, 0 if we don't
+ */
+int c_extra(buffer *space, int rt)
+{
+	if (space->bp == 0)
+		return (0);
+
+	while (space->buf[space->bp] != '\0')
+	{
+		if (space->buf[space->bp] == ';')
+		{
+			c_short(space);
+			return (1);
+		}
+		if (space->buf[space->bp] == '&' && rt == 0)
+		{
+			c_short(space);
+			return (1);
+		}
+		if (space->buf[space->bp] == '|' && rt != 0)
+		{
+			c_short(space);
+			return (1);
+		}
+		space->bp++;
+	}
+	space->bp = 0;
+	return (0);
+}
+/**
+ * c_short - short
+ * @space: space
+ */
+void c_short(buffer *space)
+{
+	int chk;
+
+	chk = 0;
+	while (space->buf[space->bp] == ';')
+		space->bp++, chk = 1;
+	if (chk)
+		return;
+
+	while (space->buf[space->bp] == '|')
+		space->bp++, chk = 1;
+	if (chk)
+		return;
+
+	while (space->buf[space->bp] == '&')
+		space->bp++;
+}
+/**
+ * main - hsh
+ * @ac: argument count
+ * @av: a list of all arguments
+ * @environ: environmental variable list from the parent
  * Return: 0 on success.
  */
-int main(int argc, char **argv, char **envp)
+int main(int ac, char **av, char **environ)
 {
-	char **arg_list;
-	env_t *env_p;
-	int retrn_value;
+	char **array;
+	env_t *ev_n;
+	int rt;
 	buffer b = {NULL, BUFSIZE, 0};
-	(void)argc, (void)argv, (void)envp;
+	(void)ac, (void)av, (void)environ;
 
 	b.buf = _malloc(sizeof(char) * b.size);
-	arg_list = NULL;
-	retrn_value = 0;
+	array = NULL;
+	rt = 0;
 
-	env_p = mk_env();
-	_checker("", env_p, 'c');
+	ev_n = mk_env();
+	_checker("", ev_n, 'c');
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, _sig);
 	while (1)
 	{
-		if (!more_cmds(&b, retrn_value))
+		if (!c_extra(&b, rt))
 		{
 			_puts("$ ");
-			get_line(&b, STDIN_FILENO, env_p);
-			_checker(b.buf, env_p, 'a');
+			get_line(&b, STDIN_FILENO, ev_n);
+			_checker(b.buf, ev_n, 'a');
 		}
-		while (aliase(&b, env_p))
+		while (aliase(&b, ev_n))
 			;
-		_to_buff(&b, env_p, retrn_value);
-		read_file(&b, env_p);
-		break_buffer(&b, &arg_list);
-		if (arg_list[0] == NULL)
+		_to_buff(&b, ev_n, rt);
+		read_file(&b, ev_n);
+		break_buffer(&b, &array);
+		if (array[0] == NULL)
 			continue;
-		retrn_value = execute2(arg_list, env_p, b.size);
-		if (retrn_value != 0 && retrn_value != 2)
+		rt = execute2(array, ev_n, b.size);
+		if (rt != 0 && rt != 2)
 		{
-			retrn_value = exec_part(arg_list, env_p, b.size);
+			rt = exec_part(array, ev_n, b.size);
 		}
 			
 	}
-	return (0);
-}
-/**
- * more_cmds - check the command line for the next command
- * @b: buffer structure
- * @retrn_value: Return value from last command
- * Description: Controls the logic behind if multi-part input has more
- *				commands to execute. Handles ; && and ||.
- *				Will advance buffer to next command.
- *
- * Return: 1 if we have more commands to execute, 0 if we don't
- */
-int more_cmds(buffer *b, int retrn_value)
-{
-	if (b->bp == 0)
-		return (0);
-
-	while (b->buf[b->bp] != '\0')
-	{
-		if (b->buf[b->bp] == ';')
-		{
-			trim_cmd(b);
-			return (1);
-		}
-		if (b->buf[b->bp] == '&' && retrn_value == 0)
-		{
-			trim_cmd(b);
-			return (1);
-		}
-		if (b->buf[b->bp] == '|' && retrn_value != 0)
-		{
-			trim_cmd(b);
-			return (1);
-		}
-		b->bp++;
-	}
-	b->bp = 0;
-	return (0);
-}
-/**
- * trim_cmd - move past cmd flowcontrol point at given buffer position
- * @b: buffer structure
- * Description: Small helper function for function more_cmds. Advances
- *				the buffer point past command control characters.
- */
-void trim_cmd(buffer *b)
-{
-	int flag;
-
-	flag = 0;
-	while (b->buf[b->bp] == ';')
-		b->bp++, flag = 1;
-	if (flag)
-		return;
-
-	while (b->buf[b->bp] == '|')
-		b->bp++, flag = 1;
-	if (flag)
-		return;
-
-	while (b->buf[b->bp] == '&')
-		b->bp++;
+	return (EXIT_SUCCESS);
 }

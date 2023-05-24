@@ -84,8 +84,6 @@ typedef struct alias
 	char *value;
 	struct alias *next;
 } alias;
-int more_cmds(buffer *b, int retrn_value);
-void trim_cmd(buffer *b);
 void print_int(int num);
 void _puts(char *str);
 int _putchar(char c);
@@ -199,7 +197,8 @@ void size_x(char *cont, char ***arr);
 char *find_elem(char *array, int index);
 char *cur_pid(void);
 void _to_buff(buffer *base, env_t *environ, int rt);
-
+int c_extra(buffer *space, int rt);
+void c_short(buffer *space);
 
 
 
