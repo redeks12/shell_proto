@@ -37,7 +37,7 @@ int help_shell(char **arr)
 	{"exit", help_exit},     {"env", help_env},
 	{"setenv", help_setenv}, {"unsetenv", help_unsetenv},
 	{"cd", help_cd},         {"history", help_hist},
-	{"help", help_help},     {"alias", help_}
+	{"help", help_help},     {"alias", help_alias}
 	};
 
 	if (arr[1] == NULL)
