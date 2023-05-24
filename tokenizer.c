@@ -52,58 +52,58 @@ char **break_pth(char **find, char *locate, int size)
 	return (find);
 }
 /**
- * break_buffer - tokenize buffer by inputting NULLs and filling **av
- * @cont: The buffer with the command string
+ * break_buffer - tokenize buff_t by inputting NULLs and filling **av
+ * @cont: The buff_t with the command string
  * @array: Pointer to the command argument vector
  * Description: This function accepts a string such as 'ls -l' and changes
  *              it to 'ls\0-l'. It puts pointers to 'ls' and '-l' into *av
  */
-void break_buffer(buffer *cont, char ***array)
+void break_buffer(buff_t *cont, char ***array)
 {
 	int i, j, ident, w_s;
 	char dir;
 
-	size_x(cont->buf + cont->bp, array);
+	size_x(cont->b_s + cont->bl_s, array);
 
-	/* Build the argument vector from the given buffer */
-	// for (i = cont->bp, j = 0, ident = 1; !input_finish(cont->buf[i]); i++)
-	i = cont->bp;
+	/* Build the argument vector from the given buff_t */
+	// for (i = cont->bl_s, j = 0, ident = 1; !input_finish(cont->b_s[i]); i++)
+	i = cont->bl_s; size
 	j = 0;
 	ident = 1;
-	while (!input_finish(cont->buf[i]))
+	while (!input_finish(cont->b_s[i]))
 	{
-		w_s = is_w(cont->buf[i]);
+		w_s = is_w(cont->b_s[i]);
 		if (ident && !w_s)
 		{
-			(*array)[j++] = cont->buf + i;
+			(*array)[j++] = cont->b_s + i;
 			ident = 0;
 		}
 		if (w_s)
 		{
-			cont->buf[i] = '\0';
+			cont->b_s[i] = '\0';
 			ident = 1;
 		}
 		i++;
 	}
 	(*array)[j] = NULL;
 	/* If we end because of comments */
-	if (cont->buf[i] == '#')
-		while (cont->buf[i] != '\n' && cont->buf[i] != '\0')
+	if (cont->b_s[i] == '#')
+		while (cont->b_s[i] != '\n' && cont->b_s[i] != '\0')
 			i++;
 	/* If we ended because of newline, we MAY have more content */
-	if (cont->buf[i] == '\n' && cont->buf[i + 1] != '\0')
-		cont->buf[i] = ';';
-	else if (cont->buf[i] == '\n')
-		cont->buf[i] = '\0';
+	if (cont->b_s[i] == '\n' && cont->b_s[i + 1] != '\0')
+		cont->b_s[i] = ';';
+	else if (cont->b_s[i] == '\n')
+		cont->b_s[i] = '\0';
 	/* If we ended because of flow control commands, */
-	/* increment the buffer point and add a null before the character */
-	if (cont->buf[i] == ';' || cont->buf[i] == '|' || cont->buf[i] == '&')
+	/* increment the buff_t point and add a null before the character */
+	if (cont->b_s[i] == ';' || cont->b_s[i] == '|' || cont->b_s[i] == '&')
 	{
-		cont->bp += i - cont->bp;
-		end_inp(cont->buf + cont->bp);
-		cont->bp++;
+		cont->bl_s += i - cont->bl_s;
+		end_inp(cont->b_s + cont->bl_s);
+		cont->bl_s++;
 	}
 	else
-		cont->bp = 0;
+		cont->bl_s = 0;
 
 }
