@@ -16,7 +16,8 @@ char **break_pth(char **find, char *locate, int size)
 	space[0] = '\0';
         i = 0;
         ct = 1;
-
+	int l =0;
+	// for (i = 0, ct = 1; locate[i] != '\0'; i++)
         while (locate[i] != '\0')
 	{
 		if (locate[i] == ':')
@@ -25,7 +26,7 @@ char **break_pth(char **find, char *locate, int size)
 	}
 	ct++;
 	find = _malloc(sizeof(char *) * ct);
-
+	/* skip the PATH= */
 	for (new = locate; *new != '='; new++);
         
 	new++, idx = 0;
@@ -38,6 +39,7 @@ char **break_pth(char **find, char *locate, int size)
 			_strncat(find[idx], space, _strlen(space));
 			idx++;
 			space[0] = '\0';
+			l++;
 		}
 		else
 		{
@@ -63,6 +65,8 @@ void break_buffer(buff_t *cont, char ***array)
 
 	size_x(cont->b_s + cont->bl_s, array);
 
+	/* Build the argument vector from the given buff_t */
+	// for (i = cont->bl_s, j = 0, ident = 1; !input_finish(cont->b_s[i]); i++)
 	i = cont->bl_s;
 	j = 0;
 	ident = 1;

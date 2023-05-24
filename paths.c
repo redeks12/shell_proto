@@ -11,6 +11,7 @@ int _pth(char *locate, list_e *environ)
 	list_e *new;
 
 	new = environ;
+	// for (; new->next != NULL; new = new->next)
         while (new->next != NULL)
 	{
 		if (matchStrings(new->hold, "PATH=") != 0)
@@ -34,6 +35,7 @@ int mk_pth(char *input, char **find)
 
         i = 0;
 	int bl = ARRAY_SIZE(find);
+	// for (i = 0; find[i] != NULL; i++)
         while (find[i] != NULL)
 	{
 		_strncat(find[i], input, _strlen(input));
