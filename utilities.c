@@ -109,7 +109,6 @@ void end_inp(char *cont)
 
     while (cont[i] != '\0')
         i++;
-	i++;
     while (i > 0)
     {
 	cont[i + 1] = cont[i];

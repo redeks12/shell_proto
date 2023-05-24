@@ -16,7 +16,6 @@ char **break_pth(char **find, char *locate, int size)
 	space[0] = '\0';
         i = 0;
         ct = 1;
-	int l =0;
 
         while (locate[i] != '\0')
 	{
@@ -39,7 +38,6 @@ char **break_pth(char **find, char *locate, int size)
 			_strncat(find[idx], space, _strlen(space));
 			idx++;
 			space[0] = '\0';
-			l++;
 		}
 		else
 		{
@@ -61,7 +59,6 @@ char **break_pth(char **find, char *locate, int size)
 void break_buffer(buff_t *cont, char ***array)
 {
 	int i, j, ident, w_s;
-	char dir;
 
 	size_x(cont->b_s + cont->bl_s, array);
 
