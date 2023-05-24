@@ -67,7 +67,7 @@ void break_buffer(buff_t *cont, char ***array)
 
 	/* Build the argument vector from the given buff_t */
 	// for (i = cont->bl_s, j = 0, ident = 1; !input_finish(cont->b_s[i]); i++)
-	i = cont->bl_s; size
+	i = cont->bl_s;
 	j = 0;
 	ident = 1;
 	while (!input_finish(cont->b_s[i]))
