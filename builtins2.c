@@ -1,48 +1,5 @@
 #include "shell.h"
 /**
- * unsetenv_sh - Deletes an environmental variable from the PATH.
- * @arr: An array of arguments passed to the shell.
- * @ace: A double pointer to the beginning of arr.
- * Description: arr[1] is the PATH variable to remove.
- *
- * Return: If an error occurs - -1.
- *         Otherwise - 0.
- */
-int unsetenv_sh(char **arr, char __attribute__((__unused__)) **ace)
-{
-	char **vr, **loc_n;
-	size_t sz;
-	int i, in;
-
-	if (!arr[0])
-		return (mk_err(arr, -1));
-	vr = env_brn(arr[0]);
-	if (!vr)
-		return (0);
-
-	for (sz = 0; toppth[sz]; sz++);
-
-	loc_n = malloc(sizeof(char *) * sz);
-	if (!loc_n)
-		return (mk_err(arr, -1));
-
-	for (i = 0, in = 0; toppth[i]; i++)
-	{
-		if (*vr == toppth[i])
-		{
-			free(*vr);
-			continue;
-		}
-		loc_n[in] = toppth[i];
-		in++;
-	}
-	free(toppth);
-	toppth = loc_n;
-	toppth[sz - 1] = NULL;
-
-	return (0);
-}
-/**
  * env_sh - Prints the current environment.
  * @arr: An array of arguments passed to the shell.
  * @ace: A double pointer to the beginning of arr.
@@ -120,6 +77,49 @@ int setenv_sh(char **arr, char __attribute__((__unused__)) **ace)
 	toppth = loc_n;
 	toppth[i] = vl_n;
 	toppth[i + 1] = NULL;
+
+	return (0);
+}
+/**
+ * unsetenv_sh - Deletes an environmental variable from the PATH.
+ * @arr: An array of arguments passed to the shell.
+ * @ace: A double pointer to the beginning of arr.
+ * Description: arr[1] is the PATH variable to remove.
+ *
+ * Return: If an error occurs - -1.
+ *         Otherwise - 0.
+ */
+int unsetenv_sh(char **arr, char __attribute__((__unused__)) **ace)
+{
+	char **vr, **loc_n;
+	size_t sz;
+	int i, in;
+
+	if (!arr[0])
+		return (mk_err(arr, -1));
+	vr = env_brn(arr[0]);
+	if (!vr)
+		return (0);
+
+	for (sz = 0; toppth[sz]; sz++);
+
+	loc_n = malloc(sizeof(char *) * sz);
+	if (!loc_n)
+		return (mk_err(arr, -1));
+
+	for (i = 0, in = 0; toppth[i]; i++)
+	{
+		if (*vr == toppth[i])
+		{
+			free(*vr);
+			continue;
+		}
+		loc_n[in] = toppth[i];
+		in++;
+	}
+	free(toppth);
+	toppth = loc_n;
+	toppth[sz - 1] = NULL;
 
 	return (0);
 }
