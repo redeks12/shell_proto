@@ -13,15 +13,14 @@ int unsetenv_sh(char **arr, char __attribute__((__unused__)) **ace)
 	char **vr, **loc_n;
 	size_t sz;
 	int i, in;
-	top_pth
+
 	if (!arr[0])
 		return (mk_err(arr, -1));
 	vr = env_brn(arr[0]);
 	if (!vr)
 		return (0);
 
-	for (sz = 0; top_pth[sz]; sz++)
-		;
+	for (sz = 0; top_pth[sz]; sz++);
 
 	loc_n = malloc(sizeof(char *) * sz);
 	if (!loc_n)
