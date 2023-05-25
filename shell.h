@@ -67,7 +67,6 @@ int cd_sh(char **arr, char __attribute__((__unused__)) **ace);
 int sh_sh(char **arr, char __attribute__((__unused__)) **ace);
 int exit_sh(char **arr, char **ace);
 int env_sh(char **arr, char __attribute__((__unused__)) **ace);
-int un(char **arr, char __attribute__((__unused__)) **ace);
 int setenv_sh(char **arr, char __attribute__((__unused__)) **ace);
 int unsetenv_sh(char **arr, char __attribute__((__unused__)) **ace);
 
