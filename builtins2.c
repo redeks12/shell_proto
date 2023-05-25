@@ -20,25 +20,25 @@ int unsetenv_sh(char **arr, char __attribute__((__unused__)) **ace)
 	if (!vr)
 		return (0);
 
-	for (sz = 0; top_pth[sz]; sz++);
+	for (sz = 0; toppth[sz]; sz++);
 
 	loc_n = malloc(sizeof(char *) * sz);
 	if (!loc_n)
 		return (mk_err(arr, -1));
 
-	for (i = 0, in = 0; top_pth[i]; i++)
+	for (i = 0, in = 0; toppth[i]; i++)
 	{
-		if (*vr == top_pth[i])
+		if (*vr == toppth[i])
 		{
 			free(*vr);
 			continue;
 		}
-		loc_n[in] = top_pth[i];
+		loc_n[in] = toppth[i];
 		in++;
 	}
-	free(top_pth);
-	top_pth = loc_n;
-	top_pth[sz - 1] = NULL;
+	free(toppth);
+	toppth = loc_n;
+	toppth[sz - 1] = NULL;
 
 	return (0);
 }
@@ -58,12 +58,12 @@ int env_sh(char **arr, char __attribute__((__unused__)) **ace)
 	int idx;
 	char st = '\n';
 
-	if (!top_pth)
+	if (!toppth)
 		return (-1);
 
-	for (idx = 0; top_pth[idx]; idx++)
+	for (idx = 0; toppth[idx]; idx++)
 	{
-		print_hlps(top_pth[idx]);
+		print_hlps(toppth[idx]);
 		write(STDOUT_FILENO, &st, 1);
 	}
 
@@ -103,7 +103,7 @@ int setenv_sh(char **arr, char __attribute__((__unused__)) **ace)
 		*vr = vl_n;
 		return (0);
 	}
-	for (size = 0; top_pth[size]; size++)
+	for (size = 0; toppth[size]; size++)
 		;
 
 	loc_n = malloc(sizeof(char *) * (size + 2));
@@ -113,13 +113,13 @@ int setenv_sh(char **arr, char __attribute__((__unused__)) **ace)
 		return (mk_err(arr, -1));
 	}
 
-	for (i = 0; top_pth[i]; i++)
-		loc_n[i] = top_pth[i];
+	for (i = 0; toppth[i]; i++)
+		loc_n[i] = toppth[i];
 
-	free(top_pth);
-	top_pth = loc_n;
-	top_pth[i] = vl_n;
-	top_pth[i + 1] = NULL;
+	free(toppth);
+	toppth = loc_n;
+	toppth[i] = vl_n;
+	toppth[i + 1] = NULL;
 
 	return (0);
 }

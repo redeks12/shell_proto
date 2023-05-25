@@ -1,38 +1,38 @@
 #include "shell.h"
 /**
- * clear_pth - Frees the the top_pthment copy.
+ * clear_pth - Frees the the toppthment copy.
  */
 void clear_pth(void)
 {
 	int i;
 
-	for (i = 0; top_pth[i]; i++)
-		free(top_pth[i]);
-	free(top_pth);
+	for (i = 0; toppth[i]; i++)
+		free(toppth[i]);
+	free(toppth);
 }
 
 /**
- * env_brn - Gets an top_pthmental variable from the PATH.
- * @var: The name of the top_pthmental variable to get.
+ * env_brn - Gets an toppthmental variable from the PATH.
+ * @var: The name of the toppthmental variable to get.
  *
- * Return: If the top_pthmental variable does not exist - NULL.
- *         Otherwise - a pointer to the top_pthmental variable.
+ * Return: If the toppthmental variable does not exist - NULL.
+ *         Otherwise - a pointer to the toppthmental variable.
  */
 char **env_brn(const char *var)
 {
 	int i, len_f;
 
 	len_f = _strlen(var);
-	for (i = 0; top_pth[i]; i++)
+	for (i = 0; toppth[i]; i++)
 	{
-		if (_strncmp(var, top_pth[i], len_f) == 0)
-			return (&top_pth[i]);
+		if (_strncmp(var, toppth[i], len_f) == 0)
+			return (&toppth[i]);
 	}
 
 	return (NULL);
 }
 /**
- * pth_cp - Creates a copy of the top_pthment.
+ * pth_cp - Creates a copy of the toppthment.
  *
  * Return: If an error occurs - NULL.
  *         O/w - a double pointer to the new copy.
@@ -43,16 +43,16 @@ char **pth_cp(void)
 	size_t size;
 	int i;
 
-	for (size = 0; top_pth[size]; size++)
+	for (size = 0; toppth[size]; size++)
 		;
 
 	str = malloc(sizeof(char *) * (size + 1));
 	if (!str)
 		return (NULL);
 
-	for (i = 0; top_pth[i]; i++)
+	for (i = 0; toppth[i]; i++)
 	{
-		str[i] = malloc(_strlen(top_pth[i]) + 1);
+		str[i] = malloc(_strlen(toppth[i]) + 1);
 
 		if (!str[i])
 		{
@@ -61,19 +61,19 @@ char **pth_cp(void)
 			free(str);
 			return (NULL);
 		}
-		_strcpy(str[i], top_pth[i]);
+		_strcpy(str[i], toppth[i]);
 	}
 	str[i] = NULL;
 
 	return (str);
 }
 /**
- * ret_env - Gets the value corresponding to an top_pthmental variable.
- * @st: The top_pthmental variable to search for.
- * @l: The length of the top_pthmental variable to search for.
+ * ret_env - Gets the value corresponding to an toppthmental variable.
+ * @st: The toppthmental variable to search for.
+ * @l: The length of the toppthmental variable to search for.
  *
  * Return: If the variable is not found - an empty string.
- *         Otherwise - the value of the top_pthmental variable.
+ *         Otherwise - the value of the toppthmental variable.
  *
  * Description: Variables are stored in the format VARIABLE=VALUE.
  */

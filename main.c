@@ -18,8 +18,8 @@ int main(int ac, char *av[])
 	signal(SIGINT, sig_handler);
 
 	*m_vl = 0;
-	top_pth = pth_cp();
-	if (!top_pth)
+	toppth = pth_cp();
+	if (!toppth)
 		exit(-100);
 
 	if (ac != 1)

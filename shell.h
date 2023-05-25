@@ -14,7 +14,7 @@
 #define EXIT -3
 
 /* Global environemnt */
-extern char **top_pth;
+extern char **toppth;
 /* Global progrident*/
 char *ident;
 /* Global history counter */

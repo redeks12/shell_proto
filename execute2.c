@@ -38,7 +38,7 @@ int _run(char **pulls, char **eye)
 		}
 		if (pid_c == 0)
 		{
-			execve(iip, pulls, top_pth);
+			execve(iip, pulls, toppth);
 			if (errno == EACCES)
 				v = (mk_err(pulls, 126));
 			clear_pth();
