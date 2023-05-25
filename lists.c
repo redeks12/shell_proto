@@ -17,14 +17,14 @@ list_al *_atl(list_al **main, char *chars, char *al)
 		return (NULL);
 
 	tmp->next = NULL;
-	tmp->chars = malloc(sizeof(char) * (_strlen(chars) + 1));
-	if (!tmp->chars)
+	tmp->str_att = malloc(sizeof(char) * (_strlen(str_att) + 1));
+	if (!tmp->str_att)
 	{
 		free(tmp);
 		return (NULL);
 	}
-	tmp->al = al;
-	_strcpy(tmp->chars, chars);
+	tmp->char_iden = al;
+	_strcpy(tmp->str_att, chars);
 
 	if (*main)
 	{
@@ -54,7 +54,7 @@ def_t *_ate(def_t **start, char *cur_pth)
 	if (!tp)
 		return (NULL);
 
-	tp->cur_pth = cur_pth;
+	tp->pth_ct = cur_pth;
 	tp->next = NULL;
 
 	if (*start)
@@ -70,10 +70,10 @@ def_t *_ate(def_t **start, char *cur_pth)
 	return (tp);
 }
 /**
- * __rfl - Frees a list_al linked list.
+ * _rfl - Frees a list_al linked list.
  * @beg: THe beg of the list_al list.
  */
-void __rfl(list_al *beg)
+void _rfl(list_al *beg)
 {
 	list_al *next;
 

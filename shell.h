@@ -116,7 +116,7 @@ char *ret_pth(char *inp);
 
 
 void rl(def_t *st);
-void __rfl(list_al *beg);
+void _rfl(list_al *beg);
 def_t *_ate(def_t **start, char *cur_pth);
 list_al *_atl(list_al **main, char *chars, char *al);
 
