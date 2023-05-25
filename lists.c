@@ -17,7 +17,7 @@ list_al *_atl(list_al **main, char *chars, char *al)
 		return (NULL);
 
 	tmp->next = NULL;
-	tmp->str_att = malloc(sizeof(char) * (_strlen(str_att) + 1));
+	tmp->str_att = malloc(sizeof(char) * (_strlen(chars) + 1));
 	if (!tmp->str_att)
 	{
 		free(tmp);

@@ -127,7 +127,7 @@ int cd_sh(char **arr, char __attribute__((__unused__)) **ace)
 
 	cur[0] = "PWD";
 	cur[1] = pwd;
-	if (shellby_setenv(cur, cur) == -1)
+	if (setenv_sh(cur, cur) == -1)
 		return (-1);
 	if (arr[0] && arr[0][0] == '-' && arr[0][1] != '-')
 	{
