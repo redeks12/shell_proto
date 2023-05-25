@@ -1,155 +1,165 @@
 #include "shell.h"
 /**
- * _del_nm - removes name
- * @environ: environement
- * @tb_rm: search
- * @size: size
- * Return: a string containing the path
+ * clear_pth - Frees the the top_pthment copy.
  */
-char *_del_nm(list_e *environ, char *tb_rm, int size)
+void clear_pth(void)
 {
-	char *cur_dir;
-	list_e *new;
+	int i;
 
-	cur_dir = _malloc(sizeof(char) * size);
-	_memset(cur_dir, '\0', size);
-	new = environ;
-	for (; ; new = new->next)
+	for (i = 0; top_pth[i]; i++)
+		free(top_pth[i]);
+	free(top_pth);
+}
+
+/**
+ * env_brn - Gets an top_pthmental variable from the PATH.
+ * @var: The name of the top_pthmental variable to get.
+ *
+ * Return: If the top_pthmental variable does not exist - NULL.
+ *         Otherwise - a pointer to the top_pthmental variable.
+ */
+char **env_brn(const char *var)
+{
+	int i, len_f;
+
+	len_f = _strlen(var);
+	for (i = 0; top_pth[i]; i++)
 	{
-		if (compareStrings(new->hold, tb_rm))
+		if (_strncmp(var, top_pth[i], len_f) == 0)
+			return (&top_pth[i]);
+	}
+
+	return (NULL);
+}
+/**
+ * pth_cp - Creates a copy of the top_pthment.
+ *
+ * Return: If an error occurs - NULL.
+ *         O/w - a double pointer to the new copy.
+ */
+char **pth_cp(void)
+{
+	char **str;
+	size_t size;
+	int i;
+
+	for (size = 0; top_pth[size]; size++)
+		;
+
+	str = malloc(sizeof(char *) * (size + 1));
+	if (!str)
+		return (NULL);
+
+	for (i = 0; top_pth[i]; i++)
+	{
+		str[i] = malloc(_strlen(top_pth[i]) + 1);
+
+		if (!str[i])
 		{
-			_strcpy(cur_dir, new->hold);
-			break;
-		}
-		else if (new->next == NULL)
-		{
-			_free(cur_dir);
+			for (i--; i >= 0; i--)
+				free(str[i]);
+			free(str);
 			return (NULL);
 		}
+		_strcpy(str[i], top_pth[i]);
 	}
-	while (*cur_dir != '=')
-		cur_dir++;
-	cur_dir++;
-	return (cur_dir);
+	str[i] = NULL;
+
+	return (str);
 }
 /**
- * _ret_val - retrives a hold from the environment list
- * @environ: the env list
- * @key: key
- * Return: a pointer
+ * ret_env - Gets the value corresponding to an top_pthmental variable.
+ * @st: The top_pthmental variable to search for.
+ * @l: The length of the top_pthmental variable to search for.
+ *
+ * Return: If the variable is not found - an empty string.
+ *         Otherwise - the value of the top_pthmental variable.
+ *
+ * Description: Variables are stored in the format VARIABLE=VALUE.
  */
-char *_ret_val(list_e *environ, char *key)
+char *ret_env(char *st, int l)
 {
-	char *new_val;
+	char **plc;
+	char *blo = NULL, *new, *var;
 
-	while (1)
+	var = malloc(l + 1);
+	if (!var)
+		return (NULL);
+	var[0] = '\0';
+	_strncat(var, st, l);
+
+	plc = env_brn(var);
+	free(var);
+	if (plc)
 	{
-		if (compareStrings(environ->hold, key))
+		new = *plc;
+		while (*new != '=')
+			new++;
+		new++;
+		blo = malloc(_strlen(new) + 1);
+		if (blo)
+			_strcpy(blo, new);
+	}
+
+	return (blo);
+}
+/**
+ * c_cng - Handles variable cng.
+ * @ar_r: A double pointer containing the command and arguments.
+ * @inl: A pointer to the return value of the last executed command.
+ *
+ * Description: Replaces $$ with the current PID, $? with the return value
+ *              of the last executed program, and envrionmental variables
+ *              preceded by $ with their corresponding value.
+ */
+void c_cng(char **ar_r, int *inl)
+{
+	int j, k = 0, len;
+	char *cng = NULL, *pre_l = NULL, *post_l;
+
+	pre_l = *ar_r;
+	for (j = 0; pre_l[j]; j++)
+	{
+		if (pre_l[j] == '$' && pre_l[j + 1] &&
+				pre_l[j + 1] != ' ')
 		{
-			new_val = environ->hold;
-			break;
+			if (pre_l[j + 1] == '$')
+			{
+				cng = get_pid();
+				k = j + 2;
+			}
+			else if (pre_l[j + 1] == '?')
+			{
+				cng = _itoa(*inl);
+				k = j + 2;
+			}
+			else if (pre_l[j + 1])
+			{
+				/* extract the variable name to search for */
+				for (k = j + 1; pre_l[k] &&
+						pre_l[k] != '$' &&
+						pre_l[k] != ' '; k++)
+					;
+				len = k - (j + 1);
+				cng = ret_env(&pre_l[j + 1], len);
+			}
+			post_l = malloc(j + _strlen(cng)
+					  + _strlen(&pre_l[k]) + 1);
+			if (!ar_r)
+				return;
+			post_l[0] = '\0';
+			_strncat(post_l, pre_l, j);
+			if (cng)
+			{
+				_strcat(post_l, cng);
+				free(cng);
+				cng = NULL;
+			}
+			_strcat(post_l, &pre_l[k]);
+			free(pre_l);
+			*ar_r = post_l;
+			pre_l = post_l;
+			j = -1;
 		}
-		else if (environ->next == NULL)
-			return (NULL);
-		environ = environ->next;
 	}
-	while (*new_val++ != '=');
-
-	return (new_val);
-}
-/**
- * _rem_pth - remove symbols from pwd
- * @environ: environement
- * @pth: pth
- * @size: size
- */
-char *_rem_pth(char **arr, list_e *environ, char *pth, int size)
-{
-	int i, sym_num, identifyer;
-	char *curdir, *new_path;
-
-	new_path = _malloc(sizeof(char) * size);
-	_memset(new_path, '\0', size);
-	_strcpy(new_path, pth);
-        i = 0;
-        sym_num = 0;
-        while (new_path[i] != '\0')
-        {
-                if (new_path[i] == '/')
-                        sym_num++;
-                i++;
-        }
-
-	curdir = arr[1];
-	if (_strcmp(curdir, ".") == 0)
-		new_path = _del_nm(environ, "PWD=", size);
-	else if (_strcmp(curdir, "~") == 0)
-		new_path = _del_nm(environ, "HOME=", size);
-	else if (_strcmp(curdir, "..") == 0)
-	{
-                identifyer = 0;
-                i = 0;
-                while (identifyer < sym_num - 1)
-                {
-                        if (new_path[i] == '/')
-				identifyer++;
-                        i++;;
-                }
-                
-		new_path[i - 1] = '\0';
-	}
-	else if (_strcmp(curdir, "-") == 0)
-		new_path = _del_nm(environ, "OLDPWD=", size);
-	return (new_path);
-}
-/**
- * new_pth - new pth for tghe bfile
- * @pth: pth to create
- * @file: file
- * @character: character
- * @environment: environement
- * Return: the pth str
- */
-char *new_pth(char **pth, char *file, char *character, list_e *environ)
-{
-	char *hold;
-
-	if (_strstr(character, "/"))
-	{
-		*pth = file;
-		return (file);
-	}
-
-	hold = _ret_val(environ, character);
-	*pth = _malloc(sizeof(char) * (_strlen(hold) + _strlen(file) + 2));
-	_memcpy(*pth, hold, _strlen(hold) + 1);
-	strcat(*pth, "/");
-	strcat(*pth, file);
-	return (*pth);
-}
-/**
- * env_shell - environment builtin
- * @arr: args
- * @environ: environment
- * Return: 0 if success.
- */
-int env_shell(char **arr, list_e *environ)
-{
-	int count;
-
-	if (arr[1] == NULL)
-	{
-		env_shw(environ);
-		return (EXIT_SUCCESS);
-	}
-	
-        count = 1;
-        while (arr[count] != NULL)
-        {
-		arr[count - 1] = arr[count];
-                count++;
-        }
-
-	arr[count - 1] = arr[count];
-	return (EXIT_FAILURE);
 }

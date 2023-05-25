@@ -1,59 +1,50 @@
 #include "shell.h"
 /**
- * rem_str - replace string
- * @str: pointer 
- * @n: position 
- * Description: override strings
+ * tok_brk - Tokenizes a string.
+ * @lk: The string.
+ * @emb: The delimiter character to tokenize the string by.
+ *
+ * Return: A pointer to an array containing the tokenized words.
  */
-void rem_str(buff_t *str, int n)
+char **tok_brk(char *lk, char *emb)
 {
-	int i = 0;
-        
-	while (!(is_w(str->b_s[n + i]) || input_finish(str->b_s[n + i])))
+	char **nt;
+	int i = 0, tok, t, alph, j;
+
+	tok = num_strs(lk, emb);
+	if (tok == 0)
+		return (NULL);
+
+	nt = malloc(sizeof(char *) * (tok + 2));
+	if (!nt)
+		return (NULL);
+
+	for (t = 0; t < tok; t++)
 	{
-		str->b_s[n + i] = ' ';
-		i++;
+		while (lk[i] == *emb)
+			i++;
+
+		alph = sz_strs(lk + i, emb);
+
+		nt[t] = malloc(sizeof(char) * (alph + 1));
+		if (!nt[t])
+		{
+			for (i -= 1; i >= 0; i--)
+				free(nt[i]);
+			free(nt);
+			return (NULL);
+		}
+
+		for (j = 0; j < alph; j++)
+		{
+			nt[t][j] = lk[i];
+			i++;
+		}
+
+		nt[t][j] = '\0';
 	}
-}
-/**
- * add_str - add a new string into a buff_t at a certan position
- * @b: pointer
- * @str: string
- * @position: position
- * Description: add a new str
- */
-void add_str(buff_t *b, char *str, int position)
-{
-	unsigned int i, length;
-	int j, s;
+	nt[t] = NULL;
+	nt[t + 1] = NULL;
 
-	rem_str(b, position);
-
-	i = 0;
-	while (is_w(b->b_s[position + i]) && (position + i) < b->sz)
-		i++;
-	s = i;
-	if (s >  _strlen(str))
-		; /* insert happens below */
-	else
-	{
-		length = b->bl_s;
-		length += _strlen(b->b_s + b->bl_s);
-		length += _strlen(str);
-		while (length > b->sz)
-			_realloc(b);
-		/* Find out how many chars remain in the string to move over */
-		for (j = 0; b->b_s[j + position] != '\0'; j++)
-			;
-		/* Make room in buff_t by moving chars to the right */
-		/* jth char at nth position + length of the string */
-		/* - total open whitespace + 1 whitespace at end of cmd */
-		for ( ; j >= 0; j--)
-			b->b_s[j + position + _strlen(str) - i + 1] = b->b_s[j + position];
-	}
-
-        for (i = 0; str[i] != '\0'; i++)
-        {
-                b->b_s[position + i] = str[i], i++;
-        }
+	return (nt);
 }

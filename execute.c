@@ -1,121 +1,168 @@
 #include "shell.h"
+
 /**
- * execute2 - execute builtin functions
- * @arr: array
- * @environ: enviorn list
- * @size_s: size
- * Return: 0 on found builtin, 1 on found nothing, 2 on builtin error
+ * exec_p - Calls the execution of a command.
+ * @arr: An array of arguments.
+ * @face: A double pointer to the beginning of arr.
+ * @tr: The return value of the parent process' last executed command.
+ *
+ * Return: The return value of the last executed command.
  */
-int execute2(char **arr, list_e *environ, int size_s)
+int exec_p(char **arr, char **face, int *tr)
 {
-	int i, sz, pow;
-	builtin table[] = {
-	{"exit", exit_shell},     {"env", env_shell},
-	{"setenv", setenv_shell}, {"unsetenv", unsetenv_shell},
-	{"cd", cd_shell},         {"history", hist_shell},
-	{"help", help_shell},     {"alias", _a_shell}
-	};
+	int rem, i;
+	int (*builtin)(char **arr, char **face);
 
-	sz = ARRAY_SIZE(table);
-        i = 0;
+	builtin = built_main(arr[0]);
 
-        while(i < sz)
+	if (builtin)
 	{
-		if (strictStringMatch(arr[0], table[i].name))
-		{
-			pow = table[i].func(arr, environ, size_s);
-			return (pow);
-		}
-                i++;
-	}
-	return (EXIT_FAILURE);
-}
-/**
- * main_execute - function that runs the execve system call.
- * @input: input
- * @array: array
- * @environ: environement
- * Return: 0 on success and 2 on failure
- */
-
-int main_execute(char *input, char **array, list_e *environ)
-{
-	pid_t cur;
-	int st, i;
-	char **arr_s;
-
-
-
-	cur = fork();
-	if (cur == 0)
-	{
-		arr_s = arr_init(environ);
-
-		i = execve(input, array, arr_s);
-		if (i < 0)
-		{
-			_puts("Error: command not found\n");
-			return (2);
-			_exit(EXIT_FAILURE);
-		}
+		rem = builtin(arr + 1, face);
+		if (rem != EXIT)
+			*tr = rem;
 	}
 	else
 	{
-
-		cur = wait(&st);
-		if (WIFEXITED(st))
-			return (st);
+		*tr = _run(arr, face);
+		rem = *tr;
 	}
-	return (2);
-}
-/**
- * exec_part - execute
- * @arr: array
- * @environ: environment
- * @input_s: size
- * Return: st if success or 127 if failure.
- */
-int exec_part(char **arr, list_e *environ, int input_s)
-{
-	char *inp, *locate;
-	char **find;
-	int st, i, m;
 
-	find = NULL;
-	i = 0;
-	inp = _malloc(sizeof(char) * input_s);
-	locate = _malloc(sizeof(char) * input_s);
-	_strcpy(inp, arr[0]);
-	if (_strchr(inp, '/') != NULL)
-		st = main_execute(inp, arr, environ);
-	else
+	previous++;
+
+	for (i = 0; arr[i]; i++)
+		free(arr[i]);
+
+	return (rem);
+}
+
+/**
+ * exec_cl - Partitions operators from commands and calls them.
+ * @chars: An array of arguments.
+ * @ffc: A double pointer to the beginning of chars.
+ * @pen: The return value of the parent process' last executed command.
+ *
+ * Return: The return value of the last executed command.
+ */
+int exec_cl(char **chars, char **ffc, int *pen)
+{
+	int in, idx;
+
+	if (!chars[0])
+		return (*pen);
+	for (idx = 0; chars[idx]; idx++)
 	{
-		m = _pth(locate, environ);
-		if (m != 0)
+		if (_strncmp(chars[idx], "||", 2) == 0)
 		{
-			_puts("Error: Cannot find PATH variable\n");
-			return (127);
+			free(chars[idx]);
+			chars[idx] = NULL;
+			chars = al_rep(chars);
+			in = exec_p(chars, ffc, pen);
+			if (*pen != 0)
+			{
+				chars = &chars[++idx];
+				idx = 0;
+			}
+			else
+			{
+				for (idx++; chars[idx]; idx++)
+					free(chars[idx]);
+				return (in);
+			}
 		}
-		find = break_pth(find, locate, input_s);
-		i = mk_pth(inp, find);
-		if (i == 0)
+		else if (_strncmp(chars[idx], "&&", 2) == 0)
 		{
-			st = main_execute(inp, arr, environ);
+			free(chars[idx]);
+			chars[idx] = NULL;
+			chars = al_rep(chars);
+			in = exec_p(chars, ffc, pen);
+			if (*pen == 0)
+			{
+				chars = &chars[++idx];
+				idx = 0;
+			}
+			else
+			{
+				for (idx++; chars[idx]; idx++)
+					free(chars[idx]);
+				return (in);
+			}
 		}
 	}
-	if (i == 0)
-		return (st);
-	else
-		return (127);
+	chars = al_rep(chars);
+	in = exec_p(chars, ffc, pen);
+	return (in);
 }
-/**
- * _sig - handles the ctrl-c signal
- * @s: signal received
- */
 
-void _sig(int s)
+/**
+ * work_cmd - Gets, calls, and runs the execution of a command.
+ * @ht: The return value of the parent process' last executed command.
+ *
+ * Return: If an end-of-file is read - END_OF_FILE (-2).
+ *         If the input cannot be tokenized - -1.
+ *         O/w - The exit value of the last executed command.
+ */
+int work_cmd(int *ht)
 {
-	(void) s;
-	_puts("\n");
-	_puts("$ ");
+	int cr = 0, idx;
+	char **fl, *le = NULL, **beg;
+
+	le = new_inp(le, ht);
+	if (!le)
+		return (END_OF_FILE);
+
+	fl = tok_brk(le, " ");
+	free(le);
+	if (!fl)
+		return (cr);
+	if (see_cmd(fl) != 0)
+	{
+		*ht = 2;
+		del_s(fl, fl);
+		return (*ht);
+	}
+	beg = fl;
+
+	for (idx = 0; fl[idx]; idx++)
+	{
+		if (_strncmp(fl[idx], ";", 1) == 0)
+		{
+			free(fl[idx]);
+			fl[idx] = NULL;
+			cr = exec_cl(fl, beg, ht);
+			fl = &fl[++idx];
+			idx = 0;
+		}
+	}
+	if (fl)
+		cr = exec_cl(fl, beg, ht);
+
+	free(beg);
+	return (cr);
+}
+
+/**
+ * see_cmd - Checks if there are any leading ';', ';;', '&&', or '||'.
+ * @fl: 2D pointer to tokenized commands and arguments.
+ *
+ * Return: If a ';', '&&', or '||' is placed at an invalid position - 2.
+ *	   Otherwise - 0.
+ */
+int see_cmd(char **stf)
+{
+	size_t i;
+	char *dr, *hin;
+
+	for (i = 0; stf[i]; i++)
+	{
+		dr = stf[i];
+		if (dr[0] == ';' || dr[0] == '&' || dr[0] == '|')
+		{
+			if (i == 0 || dr[1] == ';')
+				return (mk_err(&stf[i], 2));
+			hin = stf[i + 1];
+			if (hin && (hin[0] == ';' || hin[0] == '&' || hin[0] == '|'))
+				return (mk_err(&stf[i + 1], 2));
+		}
+	}
+	return (0);
 }

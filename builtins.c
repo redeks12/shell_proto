@@ -1,181 +1,185 @@
 #include "shell.h"
-/**
- * exit_shell - exit
- * @arr: arr given by user input
- * @environ: environmental linked list
- * @size: the size of path
- * Return: 0 on success;
- */
-int exit_shell(char **arr, list_e *environ, int size)
-{
-	int var_e;
-	(void) size;
 
-	if (arr[1] != NULL)
+/**
+ * sh_sh - function
+ * @arr: function
+ * @ace: function
+ *
+ * Return: If an error occurs - -1.
+ *         Otherwise - 0.
+ */
+int sh_sh(char **arr, char __attribute__((__unused__)) **ace)
+{
+	if (!arr[0])
+		sh_all();
+	else if (_strcmp(arr[0], "alias") == 0)
+		sh_alias();
+	else if (_strcmp(arr[0], "cd") == 0)
+		sh_cd();
+	else if (_strcmp(arr[0], "exit") == 0)
+		sh_exit();
+	else if (_strcmp(arr[0], "env") == 0)
+		sh_env();
+	else if (_strcmp(arr[0], "setenv") == 0)
+		sh_setenv();
+	else if (_strcmp(arr[0], "unsetenv") == 0)
+		sh_unsetenv();
+	else if (_strcmp(arr[0], "help") == 0)
+		sh_help();
+	else
+		print_hlps(ident);
+
+	return (0);
+}
+
+/**
+ * built_main - function
+ * @command: function
+ *
+ * Return: function
+ */
+int (*built_main(char *command))(char **arr, char **ace)
+{
+	built_t table[] = {
+		{ "exit", exit_sh },
+		{ "env", env_sh },
+		{ "setenv", setenv_sh },
+		{ "unsetenv", unsetenv_sh },
+		{ "cd", cd_sh},
+		{ "alias", alias_sh },
+		{ "help", sh_sh },
+		{ NULL, NULL }
+	};
+	int i;
+
+	for (i = 0; table[i].name; i++)
 	{
-		if (!(is_digit(arr[1][0])))
-		{
-			/*_puts("exit: Expression Syntax.\n");*/
-			return (2);
-		}
+		if (_strcmp(table[i].name, command) == 0)
+			break;
 	}
-	var_e = _atoi(arr[1]);
-	_checker("", environ, 'w');
-	_setfree(FREE_ADDRESSES);
-	_exit(var_e & 0377);
-	return (EXIT_SUCCESS);
+	return (table[i].f);
 }
 /**
- * help_shell - help
- * @arr: array;
- * Return: 0 if success and 2 if failed
+ * cd_sh - Changes the current directory of the shellby process.
+ * @arr: An array of arguments.
+ * @ace: A double pointer to the beginning of arr.
+ *
+ * Return: If the given string is not a directory - 2.
+ *         If an error occurs - -1.
+ *         Otherwise - 0.
  */
-int help_shell(char **arr)
+int cd_sh(char **arr, char __attribute__((__unused__)) **ace)
 {
-	int i, wh_t;
-	builtin conts[] = {
-	{"exit", help_exit},     {"env", help_env},
-	{"setenv", help_setenv}, {"unsetenv", help_unsetenv},
-	{"cd", help_cd},         {"history", help_hist},
-	{"help", help_help},     {"alias", help_alias}
-	};
+	char **cur, *nl = "\n";
+	char *pre_dir = NULL, *pwd = NULL;
+	struct stat dir;
 
-	if (arr[1] == NULL)
+	pre_dir = getcwd(pre_dir, 0);
+	if (!pre_dir)
+		return (-1);
+
+	if (arr[0])
 	{
-		_puts("help usage: help COMMAND\n    ");
-		_puts("Prints out useful information on builtin commands\n");
-		return (EXIT_SUCCESS);
+		if (*(arr[0]) == '-' || _strcmp(arr[0], "--") == 0)
+		{
+			if ((arr[0][1] == '-' && arr[0][2] == '\0') ||
+					arr[0][1] == '\0')
+			{
+				if (env_brn("OLDPWD") != NULL)
+					(chdir(*env_brn("OLDPWD") + 7));
+			}
+			else
+			{
+				free(pre_dir);
+				return (mk_err(arr, 2));
+			}
+		}
+		else
+		{
+			if (stat(arr[0], &dir) == 0 && S_ISDIR(dir.st_mode)
+					&& ((dir.st_mode & S_IXUSR) != 0))
+				chdir(arr[0]);
+			else
+			{
+				free(pre_dir);
+				return (mk_err(arr, 2));
+			}
+		}
 	}
 	else
 	{
-		wh_t = ARRAY_SIZE(conts);
-
-                i = 0;
-                while (i < wh_t)
-		{
-			if (strictStringMatch(arr[1], conts[i].name))
-			{
-				conts[i].func();
-				return (0);
-			}
-                        i++;
-		}
+		if (env_brn("HOME") != NULL)
+			chdir(*(env_brn("HOME")) + 5);
 	}
-	_puts("No help topics match your query\n");
-	return (EXIT_FAILURE + 1);
+
+	pwd = getcwd(pwd, 0);
+	if (!pwd)
+		return (-1);
+
+	cur = malloc(sizeof(char *) * 2);
+	if (!cur)
+		return (-1);
+
+	cur[0] = "OLDPWD";
+	cur[1] = pre_dir;
+	if (shellby_setenv(cur, cur) == -1)
+		return (-1);
+
+	cur[0] = "PWD";
+	cur[1] = pwd;
+	if (shellby_setenv(cur, cur) == -1)
+		return (-1);
+	if (arr[0] && arr[0][0] == '-' && arr[0][1] != '-')
+	{
+		print_hlps(pwd);
+		write(STDOUT_FILENO, nl, 1);
+	}
+	free(pre_dir);
+	free(pwd);
+	free(cur);
+	return (0);
 }
 /**
- * hist_shell - hist
- * @arr: argruments
- * @environ: environement
- * @type: type
- * Return: Always 0
+ * shellby_exit - Causes normal process termination
+ *                for the shellby shell.
+ * @arr: An array of arguments containing the exit value.
+ * @ace: A double pointer to the beginning of arr.
+ *
+ * Return: If there are no arguments - -3.
+ *         If the given exit value is invalid - 2.
+ *         O/w - exits with the given status value.
+ *
+ * Description: Upon returning -3, the program exits back in the main function.
  */
-int hist_shell(char **arr, list_e *environ, int type)
+int exit_sh(char **arr, char **ace)
 {
-	static list_h old_cmd = {NULL, NULL};
+	int i, li = 10;
+	unsigned int digit = 0, full = 1 << (sizeof(int) * 8 - 1);
 
-        switch (type)
-        {
-                case 0:
-                        new_hist(&old_cmd, environ);
-                        break;
-                case 1:
-                        add_to_list(&old_cmd, arr[0]);
-                        break;
-                case 2:
-                        add_to_file(environ, &old_cmd);
-                        break;
-                default:
-        		if (arr[1] != NULL)
-        		{
-        			_puts("Error: no such command\n");
-        			return (2);
-        		}
-        		show_hist(&old_cmd);
-                        break;
-        }
-	return (EXIT_SUCCESS);
-}
-/**
- * setenv_shell - builtin 
- * @arr: arr
- * @environ: environment
- * @size: size
- * Return: 0 on success and 1 on error
- */
-int setenv_shell(char **arr, list_e *environ, int size)
-{
-	char *type;
-	list_e *new;
-	int fl, i, j;
-	(void) size;
-
-	if (arr[1] == NULL || arr[2] == NULL || arr[3] != NULL)
-		return (2);
-	if (!(is_alpha(arr[1][0])))
-		return (2);
-	/* set up all strings up*/
-	j = _strlen(arr[2]);
-	i = _strlen(arr[1]);
-	type = _malloc(sizeof(char) * (i + j + 2));
-	_memcpy(type, arr[1], i + 1);
-	_strncat(type, "=", 1);
-	new = environ;
-	fl = 0; 
-
-	while(new != NULL)
+	if (arr[0])
 	{
-		if (matchStrings(new->hold, type) != 0)
+		if (arr[0][0] == '+')
 		{
-			_strcat(type, arr[2]);
-			new->hold = type;
-			fl = 1;
+			i = 1;
+			li++;
 		}
-		new = new->next;
-	}
-	if (fl == 0)
-	{
-		_strcat(type, arr[2]);
-		env_join(&environ, type);
-	}
-	return (EXIT_SUCCESS);
-}
-/**
- * unsetenv_shell - builtin 
- * @arr: args
- * @environ: environment
- * Return: 0 on success and 1 on failure
- * Description: This will delete the node that contains the variable given, if
- * node does not exist then function will succeed
- */
-int unsetenv_shell(char **arr, list_e *environ)
-{
-	char *type;
-	list_e *new;
-	int ct, i;
-
-	if (arr[1] == NULL)
-	{
-		/*_write("unsetenv: Too few arguments.\n");*/
-		return (2);
-	}
-	i = _strlen(arr[1]);
-	type = _malloc(sizeof(char) * (i + 2));
-	_memcpy(type, arr[1], i + 1);
-	_strncat(type, "=", 1);
-
-	new = environ;
-	ct = 0;
-	while (new != NULL)
-	{
-		if (_strstr(new->hold, type) != NULL)
+		for (; arr[0][i]; i++)
 		{
-			env_del(&environ, ct);
-			return (0);
+			if (i <= li && arr[0][i] >= '0' && arr[0][i] <= '9')
+				digit = (digit * 10) + (arr[0][i] - '0');
+			else
+				return (mk_err(--arr, 2));
 		}
-		ct++;
-		new = new->next;
 	}
-	return (2);
+	else
+	{
+		return (-3);
+	}
+	if (digit > full - 1)
+		return (mk_err(--arr, 2));
+	arr -= 1;
+	del_s(arr, ace);
+	clear_pth();
+	_rfl(frd);
+	exit(digit);
 }

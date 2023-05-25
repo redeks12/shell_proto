@@ -1,52 +1,128 @@
 #include "shell.h"
 /**
- * _pth - copies the $PATH into the string locate
- * @locate: string to copy the $PATH into
- * @environ: environemental variable environ
- * Return: 0 if successly found PATH variable and 1 if PATH
- * not found
+ * ret_pth - Locates a inp in the PATH.
+ * @inp: The inp to locate.
+ *
+ * Return: If an error occurs or the inp cannot be located - NULL.
+ *         Otherwise - the full pathname of the inp.
  */
-int _pth(char *locate, list_e *environ)
+char *ret_pth(char *inp)
 {
-	list_e *new;
+	char **pth, *n;
+	def_t *locs, *fst;
+	struct stat a;
 
-	new = environ;
+	pth = env_brn("PATH");
+	if (!pth || !(*pth))
+		return (NULL);
 
-        while (new->next != NULL)
+	locs = cur_loc(*pth + 5);
+	fst = locs;
+
+	while (locs)
 	{
-		if (matchStrings(new->hold, "PATH=") != 0)
+		n = malloc(_strlen(locs->pth_ct) + _strlen(inp) + 2);
+		if (!n)
+			return (NULL);
+
+		_strcpy(n, locs->pth_ct);
+		_strcat(n, "/");
+		_strcat(n, inp);
+
+		if (stat(n, &a) == 0)
 		{
-			_strcpy(locate, new->hold);
-			return (EXIT_SUCCESS);
+			rl(fst);
+			return (n);
 		}
-                new = new->next;
+
+		locs = locs->next;
+		free(n);
 	}
-	return (EXIT_FAILURE);
+
+	rl(fst);
+
+	return (NULL);
+}
+
+/**
+ * cur_loc - Tokenizes a colon-separated list of
+ *                directories into a list_s linked list.
+ * @loc: The colon-separated list of directories.
+ *
+ * Return: A pointer to the initialized linked list.
+ */
+def_t *cur_loc(char *loc)
+{
+	int st;
+	char **pth, *chars;
+	def_t *first = NULL;
+
+	chars = add_to_loc(loc);
+	if (!chars)
+		return (NULL);
+	pth = tok_brk(chars, ":");
+	free(chars);
+	if (!pth)
+		return (NULL);
+
+	for (st = 0; pth[st]; st++)
+	{
+		if (_ate(&first, pth[st]) == NULL)
+		{
+			rl(first);
+			free(pth);
+			return (NULL);
+		}
+	}
+
+	free(pth);
+
+	return (first);
 }
 /**
- * mk_pth - checks th input
- * @input: input by user
- * @find: array
- * Return: 0 if found and -1 if not;
+ * num_strs - Counts the number of delimited
+ *                words contained within a string.
+ * @chars: The string to be searched.
+ * @sym: The delimiter character.
+ *
+ * Return: The number of words contained within chars.
  */
-int mk_pth(char *input, char **find)
+int num_strs(char *chars, char *sym)
 {
-	int i, file;
+	int i, brks = 0, ln = 0;
 
-        i = 0;
+	for (i = 0; *(chars + i); i++)
+		ln++;
 
-        while (find[i] != NULL)
+	for (i = 0; i < ln; i++)
 	{
-		_strncat(find[i], input, _strlen(input));
-		file = open(find[i], O_RDONLY);
-		if (file > 0)
+		if (*(chars + i) != *sym)
 		{
-			close(file);
-			_strcpy(input, find[i]);
-			return (0);
+			brks++;
+			i += sz_strs(chars + i, sym);
 		}
-                i++;
 	}
-	write(0, "Error: command not found\n", 25);
-	return (-1);
+
+	return (brks);
+}
+/**
+ * sz_strs - Locates the delimiter i marking the end
+ *             of the first token contained within a string.
+ * @characters: The string to be searched.
+ * @sig: The delimiter character.
+ *
+ * Return: The delimiter i marking the end of
+ *         the intitial token pointed to be characters.
+ */
+int sz_strs(char *characters, char *sig)
+{
+	int i = 0, j = 0;
+
+	while (*(characters + i) && *(characters + i) != *sig)
+	{
+		j++;
+		i++;
+	}
+
+	return (j);
 }

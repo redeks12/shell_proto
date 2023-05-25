@@ -1,52 +1,103 @@
 #include "shell.h"
+
 /**
- * help_alias - builtin help printout for alias
- * Return: Always 0
+ * sh_all - Displays all possible builtin shellby commands.
  */
-int help_alias(void)
+void sh_all(void)
 {
-	_puts("alias usage: alias [KEY][=VALUE]\n    Allows aliases to be set for");
-	_puts(" quicker shell usage.\nAlias with no KEY VALUE prints a list of ");
-	_puts("aliases.\nAlias with KEY prints the alias match for that key.\n");
-	_puts("Alias with KEY VALUE sets or overwrites the KEY with new VALUE.\n");
-	return (0);
+	char *h_all = "Shellby\nThese shell commands are defined internally.\n";
+
+	print_hlps(h_all);
+	h_all = "Type 'help' to see this list.\nType 'help name' to find ";
+	print_hlps(h_all);
+	h_all = "out more about the function 'name'.\n\n  alias   \t";
+	print_hlps(h_all);
+	h_all = "alias [NAME[='VALUE'] ...]\n  cd    \tcd   ";
+	print_hlps(h_all);
+	h_all = "[DIRECTORY]\n  exit    \texit [STATUS]\n  env     \tenv";
+	print_hlps(h_all);
+	h_all = "\n  setenv  \tsetenv [VARIABLE] [VALUE]\n  unsetenv\t";
+	print_hlps(h_all);
+	h_all = "unsetenv [VARIABLE]\n";
+	print_hlps(h_all);
 }
 /**
- * help_cd - builtin help printout for cd
- * Return: Always 0
+ * sh_cd - Displays information on the shellby builtin command 'cd'.
  */
-int help_cd(void)
+void sh_cd(void)
 {
-	/* Maybe write more here, actualy help printout is a book */
-	_puts("cd usage: cd DIR\n    Change the current directory to DIR.\n");
-	return (EXIT_SUCCESS);
+	char *h_cd = "cd: cd [DIRECTORY]\n\tChanges the current directory of the";
+
+	print_hlps(h_cd);
+	h_cd = " process to DIRECTORY.\n\n\tIf no argument is given, the ";
+	print_hlps(h_cd);
+	h_cd = "command is interpreted as cd $HOME. If the argument '-' is";
+	print_hlps(h_cd);
+	h_cd = " given, the command is interpreted as cd $OLDPWD.\n\n";
+	print_hlps(h_cd);
+	h_cd = "\tThe environment variables PWD and OLDPWD are updated ";
+	print_hlps(h_cd);
+	h_cd = "after a change of directory.\n";
+	print_hlps(h_cd);
 }
 /**
- * help_env - builtin help printout for env
- * Return: Always 0
+ * sh_exit - Displays information on the shellby builtin command 'exit'.
  */
-int help_env(void)
+void sh_exit(void)
 {
-	_puts("env usage: env\n    Prints out the current envirornment.\n");
-	return (EXIT_SUCCESS);
+	char *h_exit = "exit: exit [STATUS]\n\tExits the shell.\n\n\tThe ";
+
+	print_hlps(h_exit);
+	h_exit = "STATUS argument is the integer used to exit the shell.";
+	print_hlps(h_exit);
+	h_exit = " If no argument is given, the command is interpreted as";
+	print_hlps(h_exit);
+	h_exit = " exit 0.\n";
+	print_hlps(h_exit);
+}
+
+/**
+ * sh_help - Displays information on the shellby builtin command 'help'.
+ */
+void sh_help(void)
+{
+	char *h_h = "help: help\n\tSee all possible Shellby builtin commands.\n";
+
+	print_hlps(h_h);
+	h_h = "\n      help [BUILTIN NAME]\n\tSee specific information on each ";
+	print_hlps(h_h);
+	h_h = "builtin command.\n";
+	print_hlps(h_h);
+}
+void sh_alias(void)
+{
+	char *h_al = "alias: alias [NAME[='VALUE'] ...]\n\tHandles aliases.\n";
+
+	print_hlps(h_al);
+	h_al = "\n\talias: Prints a list of all aliases, one per line, in ";
+	print_hlps(h_al);
+	h_al = "the format NAME='VALUE'.\n\talias name [name2 ...]:prints";
+	print_hlps(h_al);
+	h_al = " the aliases name, name2, etc. one per line, in the ";
+	print_hlps(h_al);
+	h_al = "form NAME='VALUE'.\n\talias NAME='VALUE' [...]: Defines";
+	print_hlps(h_al);
+	h_al = " an alias for each NAME whose VALUE is given. If NAME ";
+	print_hlps(h_al);
+	h_al = "is already an alias, replace its value with VALUE.\n";
+	print_hlps(h_al);
 }
 /**
- * help_exit - builtin help printout for exit
- * Return: Always 0
+ * sh_setenv - Displays information on the shellby builtin command 'setenv'.
  */
-int help_exit(void)
+void sh_setenv(void)
 {
-	_puts("exit usage: exit N\n    Exit the shell.\n\n    ");
-	_puts("Exits the shell with a status of N.  If N is omitted, ");
-	_puts("the exit status\n    is that of the last command executed.\n");
-	return (EXIT_SUCCESS);
+	char *h_senv = "setenv: setenv [VARIABLE] [VALUE]\n\tInitializes a new";
+
+	print_hlps(h_senv);
+	h_senv = "environment variable, or modifies an existing one.\n\n";
+	print_hlps(h_senv);
+	h_senv = "\tUpon failure, prints a message to stderr.\n";
+	print_hlps(h_senv);
 }
-/**
- * help_help - builtin help printout for help
- * Return: Always 0
- */
-int help_help(void)
-{
-	_puts("help usage: help COMMAND\n    Display helpful info about builtins\n");
-	return (0);
-}
+

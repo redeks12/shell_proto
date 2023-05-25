@@ -1,160 +1,143 @@
 #include "shell.h"
+
 /**
- * aliase - wrapper function for checking and replacing aliases
- * @b: buff_t structure
- * @env_p: enviornment struct to pass along
- * Return: 1 on list_al replacement, 0 if no replacement
+ * al_rep - function
+ * @arr: function
+ *
+ * Return: function
  */
-int aliase(buff_t *b, list_e *env_p)
+char **al_rep(char **arr)
 {
-	static int stop = 2;
-	int i, size;
-	char *str, *strcpy;
+	list_al *new;
+	int i;
+	char *vl;
 
-	size = 0, i = 0;
-	while (b->b_s[b->bl_s] == ' ' || b->b_s[b->bl_s] == '\t')
-		b->bl_s++;
-	while (!is_w(b->b_s[b->bl_s + size]))
-		size++;
-
-	str = _malloc(sizeof(char) * (size + 1));
-	strcpy = str;
-
-	while (i < size)
-		str[i] = b->b_s[b->bl_s + i], i++;
-	str[i] = '\0';
-
-	_a_shell(&str, env_p, 0);
-
-	if (str)
+	if (_strcmp(arr[0], "alias") == 0)
+		return (arr);
+	for (i = 0; arr[i]; i++)
 	{
-		rem_str(b, b->bl_s);
-		add_str(b, str, b->bl_s);
-		_free(strcpy);
-		if (stop++ == 10)
+		new = frd;
+		while (new)
 		{
-			stop = 0;
-			return (0);
+			if (_strcmp(arr[i], new->char_iden) == 0)
+			{
+				vl = malloc(sizeof(char) * (_strlen(new->str_att) + 1));
+				if (!vl)
+				{
+					del_s(arr, arr);
+					return (NULL);
+				}
+				_strcpy(vl, new->str_att);
+				free(arr[i]);
+				arr[i] = vl;
+				i--;
+				break;
+			}
+			new = new->next;
 		}
-		return (1);
 	}
-	else
-		_free(str);
-	stop = 0;
-	return (0);
+
+	return (arr);
 }
 /**
- * a_operations - operates and configure for the list_al
- * @list: list_al
- * @arr: args
- *
- * Return: Always 0;
+ * shw_al - function
+ * @list: function.
  */
-int a_operations(list_al *list, char **arr)
+void shw_al(list_al *list)
 {
-	list_al *item;
-	char *character, *val;
-	int i, j;
+	char *str;
+	int hin = _strlen(list->char_iden) + _strlen(list->str_att) + 4;
 
-	val = _strstr(arr[1], "=");
-	if (val != NULL)
-		val++;
+	str = malloc(sizeof(char) * (hin + 1));
+	if (!str)
+		return;
+	_strcpy(str, list->char_iden);
+	_strcat(str, "='");
+	_strcat(str, list->str_att);
+	_strcat(str, "'\n");
 
-	val = duplicate(val);
-
-	i = 0;
-	j = 0;
-	while (arr[1][i] != '=')
-		i++;
-	character = _malloc(sizeof(char) * (i + 1));
-	while (j < i)
-	{
-		character[j] = arr[1][j];
-		j++;
-	}
-	character[j] = '\0';
-
-	while (list->next != NULL && !strictStringMatch(character, list->unq))
-		list = list->next;
-	if (list->unq == NULL || strictStringMatch(character, list->unq))
-	{
-		list->unq = character;
-		list->hold_s = val;
-	}
-	else if (list->next == NULL)
-	{
-		item = _malloc(sizeof(list_al));
-		item->next = NULL;
-		item->hold_s = val;
-		item->unq = character;
-		list->next = item;
-	}
-	else
-		list->hold_s = val;
-	return (0);
+	write(STDOUT_FILENO, str, hin);
+	free(str);
 }
 /**
- * a_print - print aliase
- * @list: linked list
- * @arr: args
- *
- * Return: 1 if no match needed, 2 on list_al not found, 0 on success
+ * prep_al - function
+ * @av: function
+ * @vl: function
  */
-int a_print(list_al *list, char **arr)
+void prep_al(char *av, char *vl)
 {
-	char *string;
+	list_al *new = frd;
+	int hin, j, k;
+	char *str;
 
-	string = _strstr(arr[1], "=");
-	if (string != NULL)
-		return (EXIT_FAILURE);
-
-	string = a_find(list, arr[1]);
-	if (string == NULL)
+	*vl = '\0';
+	vl++;
+	hin = _strlen(vl) - _strspn(vl, "'\"");
+	str = malloc(sizeof(char) * (hin + 1));
+	if (!str)
+		return;
+	for (j = 0, k = 0; vl[j]; j++)
 	{
-		_puts("list_al not found\n");
-		return (2);
+		if (vl[j] != '\'' && vl[j] != '"')
+			str[k++] = vl[j];
 	}
-	else
+	str[k] = '\0';
+	while (new)
 	{
-		_puts("list_al ");
-		_puts(arr[1]);
-		_puts("='");
-		_puts(string);
-		_puts("'\n");
+		if (_strcmp(av, new->char_iden) == 0)
+		{
+			free(new->str_att);
+			new->str_att = str;
+			break;
+		}
+		new = new->next;
 	}
-	return (EXIT_SUCCESS);
+	if (!new)
+		_atl(&frd, av, str);
 }
 /**
- * a_complete - show all aliases
- * @prop: list_al linked list
+ * alias_sh - function
+ * @arr: function
+ * @ace: function
  *
- * Return: Always 0
+ * Return: If an error occurs - -1.
+ *         Otherwise - 0.
  */
-int a_complete(list_al *prop)
+int alias_sh(char **arr, char __attribute__((__unused__)) **ace)
 {
-	for ( ;prop != NULL && prop->unq != NULL; prop = prop->next)
+	list_al *new = frd;
+	int i, tr = 0;
+	char *str;
+
+	if (!arr[0])
 	{
-		_puts("list_al ");
-		_puts(prop->unq);
-		_puts("='");
-		_puts(prop->hold_s);
-		_puts("'\n");
+		while (new)
+		{
+			shw_al(new);
+			new = new->next;
+		}
+		return (tr);
 	}
-	return (EXIT_SUCCESS);
-}
-/**
- * a_find - find list_al values matching their unq
- * @prop: list_al linked list
- * @arr: list_al to search for
- *
- * Return: matching list_al hold_s, or NULL
- */
-char *a_find(list_al *prop, char *arr)
-{
-	for (; prop != NULL && prop->unq != NULL; prop = prop->next)
+	for (i = 0; arr[i]; i++)
 	{
-		if (strictStringMatch(arr, prop->unq))
-			return (prop->hold_s);
+		new = frd;
+		str = _strchr(arr[i], '=');
+		if (!str)
+		{
+			while (new)
+			{
+				if (_strcmp(arr[i], new->char_iden) == 0)
+				{
+					shw_al(new);
+					break;
+				}
+				new = new->next;
+			}
+			if (!new)
+				tr = mk_err(arr + i, 1);
+		}
+		else
+			prep_al(arr[i], str);
 	}
-	return (NULL);
+	return (tr);
 }

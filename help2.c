@@ -1,31 +1,23 @@
 #include "shell.h"
-/**
- * help_hist - builtin help printout for history
- * Return: Always EXIT_SUCCESS
- */
-int help_hist(void)
+
+void sh_unsetenv(void)
 {
-	_puts("history usage: history\n    ");
-	_puts("Display the history list with line numbers.\n");
-	return (EXIT_SUCCESS);
+	char *h_uenv = "unsetenv: unsetenv [VARIABLE]\n\tRemoves an ";
+
+	print_hlps(h_uenv);
+	h_uenv = "environmental variable.\n\n\tUpon failure, prints a ";
+	print_hlps(h_uenv);
+	h_uenv = "message to stderr.\n";
+	print_hlps(h_uenv);
 }
-/**
- * help_setenv - builtin help printout for setenv
- * Return: Always EXIT_SUCCESS
- */
-int help_setenv(void)
+
+void sh_env(void)
 {
-	_puts("setenv usage: setenv VARIABLE VALUE\n    Initialize a new");
-	_puts(" environment variable, or modify an existing one.\n");
-	return (EXIT_SUCCESS);
+	char *h_env = "env: env\n\tPrints the current environment.\n";
+
+	print_hlps(h_env);
 }
-/**
- * help_unsetenv - builtin help printout for unsetenv
- * Return: Always EXIT_SUCCESS
- */
-int help_unsetenv(void)
+void print_hlps(char *hlp)
 {
-	_puts("unsetenv usage: unsetenv VARIABLE:\n    ");
-	_puts("Remove an envirornment variable.\n");
-	return (EXIT_SUCCESS);
+	write(STDOUT_FILENO, hlp, _strlen(hlp));
 }
